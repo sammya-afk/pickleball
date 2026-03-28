@@ -232,14 +232,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
       </div>
     </div>
 
-    <div id="subOk" style="display:none;text-align:center;padding:32px 0">
-      <div style="font-size:56px;margin-bottom:16px">🎉</div>
-      <div style="font-size:20px;font-weight:700;margin-bottom:8px">Rankings Saved!</div>
-      <div style="color:var(--text3);font-size:15px;margin-bottom:28px">Pass to the next player.</div>
-      <div style="display:flex;gap:10px;justify-content:center">
-        <button class="btn-ghost" onclick="resetSubmit()">Next Player</button>
-        <button class="btn-primary" style="flex:1;max-width:160px" onclick="closeSubmit()">Done</button>
+    <div id="subOk" style="display:none;text-align:center;padding:28px 0">
+      <div style="font-size:48px;margin-bottom:14px" id="subOkEmoji">🏓</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text)">Rankings Saved!</div>
+      <div style="background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:var(--radius);padding:16px 18px;margin-bottom:24px;text-align:left">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--primary);text-transform:uppercase;margin-bottom:8px">🥒 Did You Know?</div>
+        <div style="font-size:15px;color:var(--text2);line-height:1.6" id="pickleballFact"></div>
       </div>
+      <button class="btn-primary" onclick="closeSubmit()">Done</button>
     </div>
   </div>
 </div>
@@ -292,7 +292,44 @@ var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5d
 
 var U=localStorage.getItem('pb_url')||SCRIPT_URL;
 var P=[],S=[],WP=[],SM='',R={};
-var MIN_VOTES=4;
+var FACTS=[
+  {e:'🥒',t:"Pickleball is named after a dog. Inventor Joel Pritchard's dog Pickles kept chasing the ball and running off with it. At least someone was having fun."},
+  {e:'👴',t:"Pickleball was invented in 1965 by three dads on Bainbridge Island, WA who were bored and had nothing else to do. Relatable."},
+  {e:'📈',t:"Pickleball is the fastest growing sport in America. It grew 159% in three years. Your group is basically ahead of the curve."},
+  {e:'🎾',t:"The original pickleball net was a badminton net lowered a couple inches. Innovation at its finest."},
+  {e:'🏓',t:"A regulation pickleball has exactly 26–40 holes in it. Nobody knows why that range is so wide. The sport lives in chaos."},
+  {e:'👴🏼',t:"The average age of a pickleball player is 38. But the most dedicated players are 55+. The seniors are coming for your ranking."},
+  {e:'🤫',t:"The kitchen — the non-volley zone — is the most important 7 feet in the game. Also the most argued-about 7 feet in any sport."},
+  {e:'💰',t:"Professional pickleball players can earn over $100,000 a year. Meanwhile, you're playing for bragging rights and a spot on this leaderboard."},
+  {e:'🏆',t:"The USA Pickleball National Championships draws over 3,000 players. Your group just needs 4 votes to update the rankings."},
+  {e:'🎱',t:"Pickleball paddles were originally made from plywood. Now they're made from aerospace-grade carbon fiber. The sport had a glow-up."},
+  {e:'🧮',t:"You can only score a point when your team is serving. This rule was designed to extend rallies. It mostly just extends confusion."},
+  {e:'🌍',t:"Pickleball is now played in over 70 countries. The world is slowly realizing what your group already knows."},
+  {e:'🍕',t:"A regulation pickleball court is 44 feet long and 20 feet wide — roughly the size of a two-car garage. You've been playing in a garage this whole time."},
+  {e:'🎤',t:"Pickleball makes a very distinct 'pop' sound when hit. Neighbors of outdoor courts have filed noise complaints. The sport is controversial."},
+  {e:'🐔',t:"Some say the name came from the term 'pickle boat' — the last boat to return in a crew race, filled with leftover oarsmen. Either story is weird."},
+  {e:'🏋️',t:"A one-hour pickleball game burns around 350-475 calories. That's roughly one large order of fries. Worth it."},
+  {e:'⚡',t:"The fastest recorded pickleball serve clocked in at 73 mph. That's fast enough that you definitely wouldn't see it coming."},
+  {e:'🧓',t:"At the 2023 US Open Pickleball Championships, the oldest competitor was 85 years old. There is no excuse for not showing up."},
+  {e:'🏠',t:"Backyard pickleball courts are now a legitimate real estate selling point. Your home value just went up."},
+  {e:'📺',t:"Pickleball has been broadcast on ESPN, CBS, and Fox Sports. Your Friday games are basically pre-pro scouting."},
+  {e:'🎰',t:"The probability of hitting the net on a dink shot increases dramatically when someone is watching. Science has not confirmed this, but everyone knows it's true."},
+  {e:'🧠',t:"Studies show pickleball improves cognitive function in older adults. So the more you play, the smarter you get. Unrelated to your ranking."},
+  {e:'🌞',t:"Outdoor pickleballs have 40 holes. Indoor pickleballs have 26 holes. This is genuinely one of the most important facts in this list."},
+  {e:'🤝',t:"Pickleball etiquette requires you to call your own faults honestly. The honor system is alive and well. Mostly."},
+  {e:'🎓',t:"Major universities now offer pickleball scholarships. The sport went from backyard fun to full academia in under 60 years."},
+  {e:'🥇',t:"The serve in pickleball must be made underhand. This is the only major racket sport with that rule. Pickleball does what it wants."},
+  {e:'🤖',t:"There is now an AI pickleball coach app that analyzes your swing. It probably ranks you better than your friends do."},
+  {e:'😂',t:"The official term for hitting the ball into the net is not a fault — it's just called 'sad.' (Okay that one isn't true. But it should be.)"},
+  {e:'🌮',t:"Joel Pritchard, one of pickleball's inventors, later became a US Congressman. He helped create two great American institutions."},
+  {e:'🔮',t:"At the current growth rate, every American will play pickleball by 2030. Resistance is futile."}
+];
+
+function showFact(){
+  var f=FACTS[Math.floor(Math.random()*FACTS.length)];
+  document.getElementById('pickleballFact').textContent=f.t;
+  document.getElementById('subOkEmoji').textContent=f.e;
+}
 var currentSub='season';
 
 // ── AVATAR COLORS ──
@@ -582,6 +619,7 @@ async function doSub(){
     await load();
     document.getElementById('submitFormInner').style.display='none';
     document.getElementById('subOk').style.display='block';
+    showFact();
     toast('Rankings saved! 🎉');
   }catch(e){
     setErr('Failed to save. '+e.message);
