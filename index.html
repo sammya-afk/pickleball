@@ -292,6 +292,8 @@ var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5d
 
 var U=localStorage.getItem('pb_url')||SCRIPT_URL;
 var P=[],S=[],WP=[],SM='',R={};
+var MIN_VOTES=4;
+var currentSub='season';
 var FACTS=[
   {e:'🥒',t:"Pickleball is named after a dog. Inventor Joel Pritchard's dog Pickles kept chasing the ball and running off with it. At least someone was having fun."},
   {e:'👴',t:"Pickleball was invented in 1965 by three dads on Bainbridge Island, WA who were bored and had nothing else to do. Relatable."},
@@ -330,9 +332,7 @@ function showFact(){
   document.getElementById('pickleballFact').textContent=f.t;
   document.getElementById('subOkEmoji').textContent=f.e;
 }
-var currentSub='season';
 
-// ── AVATAR COLORS ──
 function avatarColor(name){
   var colors=['av0','av1','av2','av3','av4','av5','av6','av7'];
   var i=0;for(var c=0;c<name.length;c++)i+=name.charCodeAt(c);
