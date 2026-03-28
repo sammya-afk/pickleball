@@ -6,11 +6,13 @@
 <title>Pickleball Power Rankings</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#f5f5f5;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
-.header{background:#1a1a1a;padding:20px 16px 14px}
+body{background:#f5f5f5;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
+.header{background:#1a1a1a;padding:20px 16px 14px;position:relative}
 .header-sub{font-size:10px;letter-spacing:3px;color:#888;text-transform:uppercase;margin-bottom:4px}
-.header-title{font-size:24px;font-weight:700;color:#fff}
+.header-title{font-size:22px;font-weight:700;color:#fff}
 .header-meta{font-size:12px;color:#888;margin-top:4px}
+.gear-btn{position:absolute;top:20px;right:16px;background:none;border:none;color:#888;font-size:22px;cursor:pointer;padding:4px}
+.gear-btn:hover{color:#fff}
 .tabs{display:flex;background:#fff;border-bottom:1px solid #e0e0e0}
 .tab{flex:1;padding:13px 4px;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-size:12px;font-family:inherit;color:#888}
 .tab.on{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:600}
@@ -24,126 +26,179 @@ input:focus{border-color:#1a1a1a}
 .btn-full{width:100%;margin-top:10px}
 .btn-out{background:#fff;color:#1a1a1a;border:1px solid #ddd;border-radius:8px;padding:6px 12px;font-family:inherit;font-weight:600;font-size:12px;cursor:pointer}
 .btn-red{background:none;border:1px solid #fcc;color:#c00;border-radius:6px;padding:4px 10px;font-size:12px;font-family:inherit;cursor:pointer}
+.btn-green{background:#2e7d32;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;width:100%}
 .card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px 16px;margin-bottom:8px}
 .chip{padding:7px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-size:13px;font-family:inherit}
 .chip.on{border-color:#1a1a1a;background:#f0f0f0;color:#1a1a1a;font-weight:600}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.rnk{width:34px;height:34px;border-radius:7px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-family:inherit;font-weight:600;font-size:13px}
+.rnk{width:36px;height:36px;border-radius:7px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px}
 .rnk.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.row{display:flex;align-items:center;gap:10px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-bottom:8px}
+.row{display:flex;align-items:center;gap:10px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:8px}
 .row.done{background:#f0faf0;border-color:#b0ddb0}
 .sync{text-align:center;padding:8px;font-size:11px;color:#888;background:#fff;display:none}
 .err{padding:10px 16px;background:#fff0f0;color:#c00;font-size:13px;border-left:3px solid #c00;margin:8px 16px;border-radius:4px;display:none}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:9px 22px;border-radius:20px;font-size:13px;display:none;z-index:999;white-space:nowrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:9px 22px;border-radius:20px;font-size:13px;display:none;z-index:9999;white-space:nowrap}
 .empty{text-align:center;padding:40px 0;color:#888;font-size:13px}
 .medal{font-size:18px;width:28px;text-align:center}
-.conn-box{border:1px solid #eee;border-radius:12px;padding:16px;margin-bottom:20px;background:#fff}
-.conn-box.ok{border-color:#4caf50}
-.conn-box.no{border-color:#f44336}
-.success{text-align:center;padding:48px 0}
+.success{text-align:center;padding:40px 0}
 .flex{display:flex;gap:8px}
 .between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .sec-title{font-size:10px;letter-spacing:2px;color:#888;text-transform:uppercase}
-.subtabs{display:flex;gap:8px;margin-bottom:16px}
-.subtab{padding:7px 16px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-size:13px;font-family:inherit;font-weight:400}
+.subtabs{display:flex;gap:8px}
+.subtab{padding:7px 16px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-size:13px;font-family:inherit}
 .subtab.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a;font-weight:600}
 .week-select{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;background:#fff;margin-bottom:14px;outline:none}
 .trend-up{color:#2e7d32;font-size:11px;font-weight:600}
 .trend-dn{color:#c62828;font-size:11px;font-weight:600}
 .trend-eq{color:#888;font-size:11px}
-.week-banner{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:12px 16px;margin-bottom:16px}
-.week-banner.open{border-color:#4caf50;background:#f0faf0}
-.week-banner.closed{border-color:#f44336;background:#fff0f0}
-.week-banner-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-weight:600}
-.week-banner-title{font-size:16px;font-weight:700}
-.week-banner-sub{font-size:12px;margin-top:3px}
+/* OVERLAY */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:1000;overflow-y:auto}
+.overlay.show{display:block}
+.modal{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;position:absolute;bottom:0;left:0;right:0;max-height:92vh;overflow-y:auto}
+.modal-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:12px;color:#888;margin-bottom:16px}
+.close-btn{float:right;background:none;border:none;font-size:20px;color:#888;cursor:pointer;margin-top:-4px}
+/* SETUP OVERLAY */
+.setup-modal{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;position:absolute;bottom:0;left:0;right:0;max-height:85vh;overflow-y:auto}
+/* INFO TOOLTIP */
+.info-btn{background:none;border:1px solid #ddd;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;color:#888;display:inline-flex;align-items:center;justify-content:center;margin-left:6px;vertical-align:middle}
+.info-box{background:#f0f4ff;border:1px solid #c0ccff;border-radius:8px;padding:12px 14px;font-size:12px;color:#333;line-height:1.6;margin-bottom:14px;display:none}
+.info-box.show{display:block}
+/* WEEK BADGE */
+.week-badge{background:#f0faf0;border:1px solid #b0ddb0;border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.week-badge-label{font-size:10px;letter-spacing:2px;color:#2e7d32;text-transform:uppercase;font-weight:600;margin-bottom:2px}
+.week-badge-title{font-size:15px;font-weight:700}
+.week-badge-sub{font-size:11px;color:#2e7d32;margin-top:2px}
+/* ADMIN SECTION */
+.admin-toggle{background:none;border:none;color:#aaa;font-size:12px;cursor:pointer;padding:8px 0;display:flex;align-items:center;gap:6px;font-family:inherit}
+.admin-toggle:hover{color:#555}
+.admin-section{display:none;background:#fafafa;border:1px solid #eee;border-radius:10px;padding:16px;margin-top:8px}
+.admin-section.show{display:block}
+.conn-status{font-size:11px;margin-bottom:10px;font-weight:600}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-sub">Power Rankings</div>
+  <div class="header-sub">Season Power Rankings</div>
   <div class="header-title">🏓 Pickleball Power Rankings</div>
   <div class="header-meta" id="hMeta">Loading...</div>
+  <button class="gear-btn" onclick="openSetup()" title="Settings">⚙️</button>
 </div>
 
 <div class="tabs">
   <button class="tab on" onclick="goTab('r')">🏠 Rankings</button>
-  <button class="tab" onclick="goTab('s')">📋 Submit</button>
-  <button class="tab" onclick="goTab('p')">⚙️ Setup</button>
+  <button class="tab" onclick="goTab('w')">📅 Weekly</button>
 </div>
 
-<div class="sync" id="sync">Syncing with Google Sheets...</div>
+<div class="sync" id="sync">Syncing...</div>
 <div class="err" id="err"></div>
 
-<!-- RANKINGS -->
+<!-- RANKINGS PAGE -->
 <div class="page on" id="pg-r">
-  <div class="between">
-    <div class="subtabs">
-      <button class="subtab on" onclick="goSubtab('season')">Season</button>
-      <button class="subtab" onclick="goSubtab('weekly')">Weekly</button>
+  <div class="between" style="margin-bottom:16px">
+    <div>
+      <span class="sec-title">Season Standings</span>
+      <button class="info-btn" onclick="toggleInfo()" title="How rankings work">ⓘ</button>
     </div>
     <button class="btn-out" onclick="load()">↻ Refresh</button>
   </div>
-  <div id="view-season">
-    <div class="sec-title" style="margin-bottom:12px">All-time season standings</div>
-    <div id="seasonList"></div>
+  <div class="info-box" id="infoBox">
+    <strong>How rankings work</strong><br/>
+    Your score = your average rank × (total weeks / weeks you played).<br/>
+    Missing a week multiplies your score upward, so showing up consistently matters as much as playing well. <strong>Lower score = better ranking.</strong><br/>
+    New players are only measured from the week they first joined.
   </div>
-  <div id="view-weekly" style="display:none">
-    <div class="sec-title" style="margin-bottom:8px">Select a week</div>
-    <select class="week-select" id="weekSelect" onchange="renderWeekly()"></select>
-    <div id="weeklyList"></div>
-    <div id="weeklyMeta" style="font-size:12px;color:#888;margin-top:8px;"></div>
+  <div id="seasonList"></div>
+  <div style="margin-top:20px">
+    <button class="btn-green" onclick="openSubmit()">＋ Submit This Week's Rankings</button>
   </div>
 </div>
 
-<!-- SUBMIT -->
-<div class="page" id="pg-s">
-  <div id="sf">
-    <div class="week-banner" id="weekBanner">
-      <div class="week-banner-label" id="weekBannerLabel">Current Week</div>
-      <div class="week-banner-title" id="weekBannerTitle">—</div>
-      <div class="week-banner-sub" id="weekBannerSub"></div>
-    </div>
-    <div id="submitOpen">
+<!-- WEEKLY PAGE -->
+<div class="page" id="pg-w">
+  <div class="between" style="margin-bottom:8px">
+    <div class="sec-title">Weekly Breakdown</div>
+    <button class="btn-out" onclick="load()">↻ Refresh</button>
+  </div>
+  <select class="week-select" id="weekSelect" onchange="renderWeekly()"></select>
+  <div id="weeklyList"></div>
+  <div id="weeklyMeta" style="font-size:12px;color:#888;margin-top:8px;"></div>
+  <div style="margin-top:20px">
+    <button class="btn-green" onclick="openSubmit()">＋ Submit This Week's Rankings</button>
+  </div>
+</div>
+
+<!-- SUBMIT OVERLAY -->
+<div class="overlay" id="submitOverlay" onclick="closeSubmitIfBg(event)">
+  <div class="modal" id="submitModal">
+    <div class="modal-handle"></div>
+    <button class="close-btn" onclick="closeSubmit()">✕</button>
+    <div class="modal-title">Submit Rankings</div>
+    <div class="modal-sub" id="modalWeekSub"></div>
+
+    <div id="submitFormInner">
+      <div class="week-badge">
+        <div class="week-badge-label">Current Week</div>
+        <div class="week-badge-title" id="modalWeekTitle">—</div>
+        <div class="week-badge-sub" id="modalDeadline"></div>
+      </div>
+
       <span class="lbl">Who Played?</span>
-      <div class="chips" id="wp"></div>
+      <div class="chips" id="wp" style="margin-bottom:14px"></div>
+
       <div id="ia-sec" style="display:none">
         <span class="lbl">I Am...</span>
-        <div class="chips" id="ia"></div>
+        <div class="chips" id="ia" style="margin-bottom:14px"></div>
       </div>
+
       <div id="rk-sec" style="display:none">
         <span class="lbl">Rank the Others (1 = Best)</span>
-        <p style="font-size:12px;color:#888;margin:6px 0 10px">Each number can only be used once.</p>
+        <p style="font-size:12px;color:#888;margin:6px 0 12px">Each number can only be used once.</p>
         <div id="rr"></div>
-        <button class="btn btn-full" id="sbtn" disabled onclick="doSub()">Submit Rankings →</button>
+        <button class="btn btn-full" id="sbtn" disabled onclick="doSub()">Submit My Rankings →</button>
+      </div>
+    </div>
+
+    <div class="success" id="subOk" style="display:none">
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">Rankings Saved!</div>
+      <div style="color:#888;font-size:13px;margin-bottom:24px">Pass to the next player.</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="btn" onclick="resetSubmit()">Next Player →</button>
+        <button class="btn-out" onclick="closeSubmit()">Done</button>
       </div>
     </div>
   </div>
-  <div class="success" id="ok" style="display:none">
-    <div style="font-size:48px;margin-bottom:12px">✅</div>
-    <div style="font-size:18px;font-weight:700;margin-bottom:8px">Rankings Saved!</div>
-    <div style="color:#888;font-size:13px;margin-bottom:24px">Pass to the next player.</div>
-    <button class="btn" onclick="reset()">Next Player →</button>
-  </div>
 </div>
 
-<!-- SETUP -->
-<div class="page" id="pg-p">
-  <div class="conn-box" id="cb">
-    <div id="cs" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:600;">Checking connection...</div>
-    <div id="cu" style="font-size:11px;color:#888;word-break:break-all;margin-bottom:10px"></div>
-    <span class="lbl" style="margin-top:0">Apps Script URL</span>
-    <input id="si" placeholder="Paste your Google Apps Script URL..."/>
-    <button class="btn" style="margin-top:8px" onclick="saveUrl()">Save URL</button>
-  </div>
-  <div id="pm" style="display:none">
+<!-- SETUP OVERLAY -->
+<div class="overlay" id="setupOverlay" onclick="closeSetupIfBg(event)">
+  <div class="setup-modal">
+    <div class="modal-handle"></div>
+    <button class="close-btn" onclick="closeSetup()">✕</button>
+    <div class="modal-title" style="margin-bottom:16px">⚙️ Setup</div>
+
+    <!-- Players -->
     <div class="sec-title" style="margin-bottom:10px">Players</div>
     <div class="flex" style="margin-bottom:12px">
       <input id="ni" placeholder="Player name..." style="flex:1" onkeydown="if(event.key==='Enter')addP()"/>
       <button class="btn" onclick="addP()">Add</button>
     </div>
-    <div id="pl"></div>
+    <div id="pl" style="margin-bottom:20px"></div>
+
+    <!-- Admin (collapsed) -->
+    <button class="admin-toggle" onclick="toggleAdmin()">
+      <span id="adminArrow">▶</span> Admin Settings
+    </button>
+    <div class="admin-section" id="adminSection">
+      <div class="conn-status" id="cs">Checking...</div>
+      <div id="cu" style="font-size:11px;color:#888;word-break:break-all;margin-bottom:10px"></div>
+      <span class="lbl" style="margin-top:0">Apps Script URL</span>
+      <input id="si" placeholder="Paste your Google Apps Script URL..." style="margin-bottom:8px"/>
+      <button class="btn" onclick="saveUrl()">Save URL</button>
+    </div>
   </div>
 </div>
 
@@ -158,103 +213,88 @@ var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5d
 
 var U=localStorage.getItem('pb_url')||SCRIPT_URL;
 var P=[],S=[],WP=[],SM='',R={};
-var currentSubtab='season';
 
 // ── WEEK LOGIC ──
-// Week runs Friday 12:00am CT through Thursday 11:59pm CT
-// Returns the Friday date that started the current week
-function getCurrentFriday() {
-  // Get current time in Central Time
-  var now = new Date();
-  var ctOffset = getCTOffset(now);
-  var ctNow = new Date(now.getTime() + ctOffset);
-
-  var day = ctNow.getUTCDay(); // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-  // Days since last Friday: Fri=0, Sat=1, Sun=2, Mon=3, Tue=4, Wed=5, Thu=6
-  var daysSinceFriday = (day + 2) % 7;
-  var friday = new Date(ctNow);
-  friday.setUTCDate(ctNow.getUTCDate() - daysSinceFriday);
-  return friday;
+function getCTOffset(date){
+  var year=date.getUTCFullYear();
+  var dstStart=getNthSunday(year,2,2);
+  var dstEnd=getNthSunday(year,10,1);
+  return (date>=dstStart&&date<dstEnd)?-5*3600000:-6*3600000;
+}
+function getNthSunday(year,month,n){
+  var d=new Date(Date.UTC(year,month,1));
+  var firstSun=1+(7-d.getUTCDay())%7;
+  return new Date(Date.UTC(year,month,firstSun+(n-1)*7,2,0,0));
+}
+function getCTNow(){
+  var now=new Date();
+  return new Date(now.getTime()+getCTOffset(now));
+}
+function getCurrentFriday(){
+  var ct=getCTNow();
+  var day=ct.getUTCDay();
+  var daysSinceFri=(day+2)%7;
+  var fri=new Date(ct);
+  fri.setUTCDate(ct.getUTCDate()-daysSinceFri);
+  return fri;
+}
+function getWeekLabel(){
+  var fri=getCurrentFriday();
+  return 'Week of '+fri.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+}
+function getDeadlineString(){
+  var fri=getCurrentFriday();
+  var thu=new Date(fri);
+  thu.setUTCDate(fri.getUTCDate()+6);
+  return 'Closes Thu '+thu.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'})+' at 11:59pm CT';
 }
 
-function getCTOffset(date) {
-  // Central Time: UTC-6 (CST) or UTC-5 (CDT)
-  // CDT: 2nd Sun March - 1st Sun Nov
-  var year = date.getUTCFullYear();
-  var dstStart = getNthSundayUTC(year, 2, 2); // 2nd Sun of March
-  var dstEnd = getNthSundayUTC(year, 10, 1);  // 1st Sun of November
-  var isDST = date >= dstStart && date < dstEnd;
-  return isDST ? -5*60*60*1000 : -6*60*60*1000;
-}
-
-function getNthSundayUTC(year, month, n) {
-  var d = new Date(Date.UTC(year, month, 1));
-  var day = d.getUTCDay();
-  var firstSunday = 1 + (7 - day) % 7;
-  var nthSunday = firstSunday + (n-1)*7;
-  return new Date(Date.UTC(year, month, nthSunday, 2, 0, 0)); // 2am local = transition
-}
-
-function getWeekLabel() {
-  var friday = getCurrentFriday();
-  return 'Week of ' + friday.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'});
-}
-
-function isSubmissionOpen() {
-  // Open from Friday 12:00am CT through Thursday 11:59:59pm CT
-  var now = new Date();
-  var ctOffset = getCTOffset(now);
-  var ctNow = new Date(now.getTime() + ctOffset);
-  var day = ctNow.getUTCDay();
-  // Open Fri(5), Sat(6), Sun(0), Mon(1), Tue(2), Wed(3), Thu(4)
-  // Closed only if it's past Thursday 11:59pm — which never happens since Friday opens it again
-  // So it's always open — but on Thursday, check if past 11:59pm
-  if (day === 4) { // Thursday
-    var hours = ctNow.getUTCHours();
-    var mins = ctNow.getUTCMinutes();
-    if (hours === 23 && mins === 59) return false;
-    // After midnight Thursday = still Thursday in UTC but we're fine until 11:59pm
-  }
-  return true; // always open Fri-Thu
-}
-
-function getDeadlineString() {
-  // Find the coming Thursday
-  var friday = getCurrentFriday();
-  var thursday = new Date(friday);
-  thursday.setUTCDate(friday.getUTCDate() + 6);
-  return 'Closes Thu ' + thursday.toLocaleDateString('en-US', {month:'short', day:'numeric', timeZone:'UTC'}) + ' at 11:59pm CT';
-}
-
-function renderWeekBanner() {
-  var banner = document.getElementById('weekBanner');
-  var title = document.getElementById('weekBannerTitle');
-  var sub = document.getElementById('weekBannerSub');
-  var label = document.getElementById('weekBannerLabel');
-  banner.className = 'week-banner open';
-  label.style.color = '#2e7d32';
-  label.textContent = 'Submissions Open';
-  title.textContent = getWeekLabel();
-  sub.textContent = getDeadlineString();
-  sub.style.color = '#2e7d32';
-  document.getElementById('submitOpen').style.display = 'block';
-}
-
-// ── CORE ──
+// ── NAV ──
 function goTab(t){
-  document.querySelectorAll('.tab').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
-  document.querySelectorAll('.page').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
-  if(t==='s') renderWeekBanner();
+  document.querySelectorAll('.tab').forEach(function(e,i){e.classList.toggle('on',['r','w'][i]===t);});
+  document.querySelectorAll('.page').forEach(function(e,i){e.classList.toggle('on',['r','w'][i]===t);});
+  if(t==='w') populateWeekSelect();
 }
 
-function goSubtab(t){
-  currentSubtab=t;
-  document.querySelectorAll('.subtab').forEach(function(e,i){e.classList.toggle('on',['season','weekly'][i]===t);});
-  document.getElementById('view-season').style.display=t==='season'?'block':'none';
-  document.getElementById('view-weekly').style.display=t==='weekly'?'block':'none';
-  if(t==='weekly') populateWeekSelect();
+function toggleInfo(){
+  var el=document.getElementById('infoBox');
+  el.classList.toggle('show');
 }
 
+// ── OVERLAYS ──
+function openSubmit(){
+  document.getElementById('modalWeekTitle').textContent=getWeekLabel();
+  document.getElementById('modalDeadline').textContent=getDeadlineString();
+  document.getElementById('modalWeekSub').textContent=getWeekLabel();
+  renderWP();
+  document.getElementById('submitOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSubmit(){
+  document.getElementById('submitOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function closeSubmitIfBg(e){if(e.target===document.getElementById('submitOverlay'))closeSubmit();}
+
+function openSetup(){
+  renderPL();updateSetupUI();
+  document.getElementById('setupOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSetup(){
+  document.getElementById('setupOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function closeSetupIfBg(e){if(e.target===document.getElementById('setupOverlay'))closeSetup();}
+
+function toggleAdmin(){
+  var sec=document.getElementById('adminSection');
+  var arrow=document.getElementById('adminArrow');
+  var show=sec.classList.toggle('show');
+  arrow.textContent=show?'▼':'▶';
+}
+
+// ── API ──
 function toast(m){var e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none';},2500);}
 function setErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display=m?'block':'none';}
 function setSyn(on){document.getElementById('sync').style.display=on?'block':'none';}
@@ -268,50 +308,96 @@ async function api(data){
 
 async function load(){
   if(!U||U==='PASTE_YOUR_URL_HERE'){
-    document.getElementById('hMeta').textContent='Not connected — see Setup tab';
-    document.getElementById('seasonList').innerHTML='<div class="empty">Paste your Script URL in Setup to get started.</div>';
-    updateSetup();return;
+    document.getElementById('hMeta').textContent='Not connected — tap ⚙️ to set up';
+    document.getElementById('seasonList').innerHTML='<div class="empty">Tap ⚙️ in the top right to connect your Google Sheet.</div>';
+    return;
   }
   setSyn(true);setErr('');
   try{
     var pd=await api({action:'getPlayers'});
     var sd=await api({action:'getData'});
     P=pd.players||[];S=sd.rows||[];
-    renderAll();
+    renderSeason();populateWeekSelect();renderHdr();renderPL();
   }catch(e){setErr('Could not connect. Error: '+e.message);}
   setSyn(false);
 }
 
-function renderAll(){renderSeason();populateWeekSelect();if(currentSubtab==='weekly')renderWeekly();renderWP();renderPL();renderHdr();}
-
 function renderHdr(){
   var w={};S.forEach(function(r){w[r[1]]=1;});
-  document.getElementById('hMeta').textContent=(U&&U!=='PASTE_YOUR_URL_HERE'?P.length+' players · '+Object.keys(w).length+' weeks · ':'')+getWeekLabel();
+  document.getElementById('hMeta').textContent=P.length+' players · '+Object.keys(w).length+' weeks · '+getWeekLabel();
 }
 
-// ── SEASON ──
-function calcScores(rows){
-  var sc={};P.forEach(function(p){sc[p]={t:0,c:0};});
-  rows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
-  return sc;
+// ── SEASON RANKINGS (with participation penalty) ──
+// For each player, only count weeks from their first appearance onward
+function getPlayerFirstWeek(player){
+  // Get all weeks sorted chronologically
+  var weekDates={};
+  S.forEach(function(r){
+    if(!weekDates[r[1]])weekDates[r[1]]=r[0]; // first timestamp seen for this week
+  });
+  var sortedWeeks=Object.keys(weekDates).sort(function(a,b){return new Date(weekDates[a])-new Date(weekDates[b]);});
+  // Find first week this player appeared (as submitter or ranked)
+  for(var i=0;i<sortedWeeks.length;i++){
+    var wk=sortedWeeks[i];
+    var wkRows=S.filter(function(r){return r[1]===wk;});
+    var appeared=wkRows.some(function(r){return r[2]===player||r[3]===player;});
+    if(appeared) return i; // index of first week
+  }
+  return 0;
+}
+
+function calcSeasonScores(){
+  // Get all weeks sorted chronologically
+  var weekDates={};
+  S.forEach(function(r){if(!weekDates[r[1]])weekDates[r[1]]=r[0];});
+  var sortedWeeks=Object.keys(weekDates).sort(function(a,b){return new Date(weekDates[a])-new Date(weekDates[b]);});
+  var totalWeeks=sortedWeeks.length;
+
+  var result=[];
+  P.forEach(function(player){
+    // Find first week this player appeared
+    var firstWkIdx=getPlayerFirstWeek(player);
+    var weeksEligible=totalWeeks-firstWkIdx;
+    if(weeksEligible<=0){result.push({n:player,score:null,avg:null,played:0,eligible:0});return;}
+
+    // Count votes received
+    var total=0,count=0;
+    S.forEach(function(r){if(r[3]===player){total+=Number(r[4]);count++;}});
+
+    if(count===0){result.push({n:player,score:null,avg:null,played:0,eligible:weeksEligible});return;}
+
+    // Count distinct weeks this player was ranked (i.e. played)
+    var weeksPlayed=new Set();
+    S.forEach(function(r){if(r[3]===player)weeksPlayed.add(r[1]);});
+    var played=weeksPlayed.size;
+
+    var avg=total/count;
+    // Participation penalty: multiply avg by (eligible weeks / weeks played)
+    var score=avg*(weeksEligible/played);
+    result.push({n:player,score:score,avg:avg,played:played,eligible:weeksEligible});
+  });
+  return result;
 }
 
 function renderSeason(){
-  var sc=calcScores(S);
-  var ranked=P.filter(function(p){return sc[p]&&sc[p].c>0;})
-    .map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};})
-    .sort(function(a,b){return a.a-b.a;});
-  var unranked=P.filter(function(p){return!sc[p]||sc[p].c===0;}).map(function(p){return{n:p,a:null,v:0};});
+  var scores=calcSeasonScores();
+  var ranked=scores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
+  var unranked=scores.filter(function(p){return p.score===null;});
   var all=ranked.concat(unranked);
   var medals=['🥇','🥈','🥉'];
   var el=document.getElementById('seasonList');
-  if(ranked.length===0){el.innerHTML='<div class="empty">No rankings yet — submit a week!</div>';return;}
+  if(ranked.length===0){el.innerHTML='<div class="empty">No rankings yet.<br/>Be the first to submit!</div>';return;}
   el.innerHTML=all.map(function(p,i){
+    var hasScore=p.score!==null;
+    var penalized=hasScore&&p.eligible>p.played;
+    var sub=hasScore
+      ?'Score: '+p.score.toFixed(2)+' · Avg rank: '+p.avg.toFixed(2)+' · '+p.played+'/'+p.eligible+' weeks'+(penalized?' ⚠️ missed '+(p.eligible-p.played):'')
+      :'No data yet';
     return '<div class="card" style="display:flex;align-items:center;gap:12px;">'
-      +'<div class="medal">'+(p.a!==null?(medals[i]||'#'+(i+1)):'—')+'</div>'
+      +'<div class="medal">'+(hasScore?(medals[i]||'#'+(i+1)):'—')+'</div>'
       +'<div style="flex:1"><div style="font-weight:600;font-size:15px;">'+p.n+'</div>'
-      +'<div style="font-size:11px;color:#888;margin-top:2px;">'+(p.a!==null?'Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':''):'No votes yet')+'</div></div>'
-      +(p.a!==null?'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div>':'')
+      +'<div style="font-size:11px;color:#888;margin-top:2px;">'+sub+'</div></div>'
+      +(hasScore?'<div style="font-size:18px;font-weight:700;color:#444;">'+p.score.toFixed(1)+'</div>':'')
       +'</div>';
   }).join('');
 }
@@ -336,6 +422,7 @@ function populateWeekSelect(){
     sel.appendChild(opt);
   });
   if(prev) sel.value=prev;
+  renderWeekly();
 }
 
 function renderWeekly(){
@@ -345,21 +432,22 @@ function renderWeekly(){
   var sc={};
   weekRows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
   var ranked=Object.keys(sc).map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};}).sort(function(a,b){return a.a-b.a;});
-  var seasonSc=calcScores(S);
-  var seasonRanked=P.filter(function(p){return seasonSc[p]&&seasonSc[p].c>0;}).map(function(p){return{n:p,a:seasonSc[p].t/seasonSc[p].c};}).sort(function(a,b){return a.a-b.a;});
+  // Season rank for trend
+  var seasonScores=calcSeasonScores();
+  var seasonRanked=seasonScores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
   var srMap={};seasonRanked.forEach(function(p,i){srMap[p.n]=i+1;});
   var medals=['🥇','🥈','🥉'];
   var submitters=Array.from(new Set(weekRows.map(function(r){return r[2];})));
-  document.getElementById('weeklyList').innerHTML=ranked.map(function(p,i){
+  document.getElementById('weeklyList').innerHTML=ranked.length===0?'<div class="empty">No votes recorded.</div>':ranked.map(function(p,i){
     var sr=srMap[p.n],diff=sr?(i+1)-sr:null,trend='';
-    if(diff!==null&&diff<0)trend='<span class="trend-up">▲ '+Math.abs(diff)+' vs season</span>';
-    else if(diff!==null&&diff>0)trend='<span class="trend-dn">▼ '+Math.abs(diff)+' vs season</span>';
-    else if(diff===0)trend='<span class="trend-eq">= season rank</span>';
+    if(diff!==null&&diff<0)trend=' <span class="trend-up">▲'+Math.abs(diff)+'</span>';
+    else if(diff!==null&&diff>0)trend=' <span class="trend-dn">▼'+Math.abs(diff)+'</span>';
+    else if(diff===0)trend=' <span class="trend-eq">=</span>';
     return '<div class="card" style="display:flex;align-items:center;gap:12px;">'
       +'<div class="medal">'+(medals[i]||'#'+(i+1))+'</div>'
       +'<div style="flex:1"><div style="font-weight:600;font-size:15px;">'+p.n+'</div>'
-      +'<div style="font-size:11px;color:#888;margin-top:2px;">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+' '+trend+'</div></div>'
-      +'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div></div>';
+      +'<div style="font-size:11px;color:#888;margin-top:2px;">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+trend+'</div></div>'
+      +'<div style="font-size:18px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div></div>';
   }).join('');
   document.getElementById('weeklyMeta').textContent='Submitted by: '+submitters.join(', ');
 }
@@ -367,7 +455,7 @@ function renderWeekly(){
 // ── SUBMIT ──
 function renderWP(){
   var el=document.getElementById('wp');
-  if(P.length===0){el.innerHTML='<span style="font-size:13px;color:#888;">Add players in Setup first.</span>';return;}
+  if(P.length===0){el.innerHTML='<span style="font-size:13px;color:#888;">Add players in ⚙️ Setup first.</span>';return;}
   el.innerHTML=P.map(function(p){var on=WP.indexOf(p)>=0;return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';}).join('');
 }
 
@@ -388,7 +476,7 @@ function renderRR(){
   document.getElementById('rr').innerHTML=others.map(function(p){
     var btns='';
     for(var r=1;r<=others.length;r++){btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';}
-    return '<div class="row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;">'+p+'</div><div style="display:flex;gap:5px;">'+btns+'</div></div>';
+    return '<div class="row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;font-size:14px;">'+p+'</div><div style="display:flex;gap:6px;">'+btns+'</div></div>';
   }).join('');
   document.getElementById('sbtn').disabled=!WP.filter(function(p){return p!==SM;}).every(function(p){return R[p]!==undefined;});
 }
@@ -401,39 +489,48 @@ async function doSub(){
   try{
     await api({action:'submit',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
     await load();
-    document.getElementById('sf').style.display='none';
-    document.getElementById('ok').style.display='block';
+    document.getElementById('submitFormInner').style.display='none';
+    document.getElementById('subOk').style.display='block';
     toast('Rankings saved! 🎉');
   }catch(e){setErr('Failed to save. Error: '+e.message);}
   setSyn(false);
 }
 
-function reset(){SM='';R={};WP=[];document.getElementById('sf').style.display='block';document.getElementById('ok').style.display='none';renderWP();renderIASection();}
+function resetSubmit(){
+  SM='';R={};WP=[];
+  document.getElementById('submitFormInner').style.display='block';
+  document.getElementById('subOk').style.display='none';
+  renderWP();renderIASection();
+}
+
+function closeSubmit(){
+  document.getElementById('submitOverlay').classList.remove('show');
+  document.body.style.overflow='';
+  resetSubmit();
+}
 
 // ── SETUP ──
 function saveUrl(){
   var url=document.getElementById('si').value.trim();
-  if(!url.startsWith('https://')){setErr('Please paste a valid https:// URL');return;}
+  if(!url.startsWith('https://')){alert('Please paste a valid https:// URL');return;}
   localStorage.setItem('pb_url',url);U=url;
   document.getElementById('si').value='';
-  updateSetup();load();toast('URL saved!');
+  updateSetupUI();load();toast('URL saved!');
 }
 
-function updateSetup(){
-  var cb=document.getElementById('cb'),cs=document.getElementById('cs'),cu=document.getElementById('cu'),pm=document.getElementById('pm');
+function updateSetupUI(){
+  var cs=document.getElementById('cs'),cu=document.getElementById('cu');
   var ready=U&&U!=='PASTE_YOUR_URL_HERE';
-  cb.className='conn-box '+(ready?'ok':'no');
   cs.style.color=ready?'#4caf50':'#f44336';
   cs.textContent=ready?'✓ Connected':'⚠ Not Connected';
   cu.textContent=ready?U:'';
-  pm.style.display=ready?'block':'none';
 }
 
 function renderPL(){
   var el=document.getElementById('pl');
-  if(P.length===0){el.innerHTML='<div class="empty" style="padding:16px 0;">No players yet.</div>';return;}
+  if(P.length===0){el.innerHTML='<div style="color:#888;font-size:13px;padding:8px 0;">No players yet.</div>';return;}
   el.innerHTML=P.map(function(p){
-    return '<div style="display:flex;align-items:center;justify-content:space-between;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-bottom:8px;">'
+    return '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-bottom:8px;">'
       +'<span style="font-weight:600;">'+p+'</span>'
       +'<button class="btn-red" onclick="remP(\''+p+'\')">Remove</button></div>';
   }).join('');
@@ -446,7 +543,7 @@ async function addP(){
   setSyn(true);
   try{
     var r=await api({action:'savePlayers',players:updated});
-    if(r.ok){P=updated;document.getElementById('ni').value='';renderPL();renderWP();renderHdr();toast(name+' added!');}
+    if(r.ok){P=updated;document.getElementById('ni').value='';renderPL();renderWP();renderHdr();renderSeason();toast(name+' added!');}
     else setErr('Script error: '+JSON.stringify(r));
   }catch(e){setErr('Failed: '+e.message);}
   setSyn(false);
@@ -457,13 +554,12 @@ async function remP(name){
   setSyn(true);
   try{
     await api({action:'savePlayers',players:updated});
-    P=updated;renderPL();renderWP();renderHdr();toast(name+' removed');
+    P=updated;renderPL();renderWP();renderHdr();renderSeason();toast(name+' removed');
   }catch(e){setErr('Failed to remove.');}
   setSyn(false);
 }
 
-updateSetup();
-renderWeekBanner();
+updateSetupUI();
 load();
 </script>
 </body>
