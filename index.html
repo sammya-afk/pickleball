@@ -12,11 +12,9 @@
   --card:#ffffff;
   --card2:#f2f2f7;
   --border:rgba(60,60,67,0.12);
-  --label:rgba(60,60,67,0.6);
   --primary:#007aff;
   --green:#34c759;
   --red:#ff3b30;
-  --orange:#ff9500;
   --yellow-bg:#fff9e6;
   --yellow-border:#ffd60a;
   --text:#000000;
@@ -27,42 +25,31 @@
   --modal-bg:#ffffff;
   --radius:12px;
   --radius-lg:16px;
-  --tab-active:#007aff;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg)}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--text);padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--text);padding-bottom:24px;overflow-x:hidden}
 
-/* ── HEADER ── */
+/* HEADER */
 .ios-header{background:var(--nav-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:0.5px solid var(--separator);padding:54px 16px 12px;position:sticky;top:0;z-index:100}
 .ios-header-top{display:flex;justify-content:space-between;align-items:center}
 .ios-header-title{font-size:28px;font-weight:700;letter-spacing:-.5px;color:var(--text)}
 .ios-header-sub{font-size:13px;color:var(--text3);margin-top:2px}
-.gear-btn{background:var(--card2);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text3);flex-shrink:0}
+.gear-btn{background:var(--card2);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
 
-/* ── TAB BAR ── */
-.tab-bar{position:fixed;bottom:0;left:0;right:0;background:var(--nav-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:0.5px solid var(--separator);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100}
-.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 0;font-family:inherit}
-.tab-icon{font-size:22px;line-height:1}
-.tab-label{font-size:10px;font-weight:500;color:var(--text3)}
-.tab-item.on .tab-label{color:var(--tab-active)}
-.tab-item.on .tab-icon{filter:none}
-
-/* ── PAGES ── */
+/* PAGES */
 .page{display:none;padding:16px;max-width:540px;margin:0 auto}
 .page.on{display:block}
 
-/* ── SECTION HEADERS ── */
+/* SECTION HEADERS */
 .section-header{font-size:13px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:0 4px;margin:20px 0 8px}
-.section-header:first-child{margin-top:0}
 
-/* ── CARDS ── */
+/* CARDS */
 .card-group{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
 .card-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:0.5px solid var(--separator)}
 .card-row:last-child{border-bottom:none}
-.card-solo{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
 
-/* ── RANKING CARDS ── */
+/* RANKING CARDS */
 .rank-card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
 .rank-card.top{background:linear-gradient(135deg,#fff9e6 0%,#fffdf5 100%);box-shadow:0 2px 8px rgba(255,184,0,0.15)}
 .rank-pos{font-size:22px;width:32px;text-align:center;flex-shrink:0}
@@ -73,36 +60,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
 .arrow-up{color:var(--green);font-size:15px}
 .arrow-dn{color:var(--red);font-size:15px}
 
-/* ── SEGMENT CONTROL ── */
-.segment{display:flex;background:rgba(120,120,128,0.12);border-radius:8px;padding:2px;margin-bottom:16px}
+/* SEGMENT CONTROL */
+.segment{display:flex;background:rgba(120,120,128,0.12);border-radius:8px;padding:2px}
 .seg-btn{flex:1;padding:6px 0;border:none;background:none;font-family:inherit;font-size:13px;font-weight:500;color:var(--text3);border-radius:6px;cursor:pointer;transition:all .2s}
 .seg-btn.on{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.12)}
 
-/* ── INPUTS ── */
+/* INPUTS */
 .ios-input{width:100%;background:var(--card);border:none;border-radius:var(--radius);padding:13px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;-webkit-appearance:none}
 .ios-select{width:100%;background:var(--card);border:none;border-radius:var(--radius);padding:13px 16px;font-family:inherit;font-size:15px;color:var(--text);outline:none;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;margin-bottom:12px}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn-primary{width:100%;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);padding:15px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:-.2px}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed}
-.btn-submit{width:100%;background:var(--green);color:#fff;border:none;border-radius:var(--radius);padding:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:-.2px;margin-top:8px;box-shadow:0 4px 14px rgba(52,199,89,.3)}
+.btn-submit-sm{background:var(--green);color:#fff;border:none;border-radius:20px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(52,199,89,.3);flex-shrink:0}
 .btn-ghost{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:var(--radius);padding:13px 20px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
 .btn-destructive{background:none;border:none;color:var(--red);font-family:inherit;font-size:14px;cursor:pointer;padding:4px 0}
 .btn-refresh{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 
-/* ── CHIPS ── */
+/* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .chip{padding:8px 16px;border-radius:20px;border:1.5px solid var(--separator);background:var(--card);color:var(--text3);cursor:pointer;font-size:14px;font-family:inherit;font-weight:500;transition:all .15s}
 .chip.on{border-color:var(--primary);background:rgba(0,122,255,.08);color:var(--primary);font-weight:600}
 
-/* ── RANK BUTTONS ── */
+/* RANK BUTTONS */
 .rnk-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
 .rnk-row.done{background:#f0fef4}
 .rnk-btns{display:flex;gap:6px;flex-wrap:wrap}
 .rnk{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--separator);background:var(--card2);color:var(--text3);cursor:pointer;font-family:inherit;font-weight:600;font-size:15px;transition:all .15s}
 .rnk.on{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.05)}
 
-/* ── OVERLAYS ── */
+/* OVERLAYS */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
 .overlay.show{display:block}
 .sheet{background:var(--modal-bg);border-radius:20px 20px 0 0;position:absolute;bottom:0;left:0;right:0;max-height:94vh;overflow-y:auto;padding:0 16px calc(32px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0)}
@@ -112,33 +99,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
 .sheet-title{font-size:18px;font-weight:700;letter-spacing:-.3px}
 .sheet-close{background:rgba(120,120,128,.14);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-/* ── WEEK BADGE ── */
+/* WEEK BADGE */
 .week-badge{background:linear-gradient(135deg,rgba(52,199,89,.12),rgba(52,199,89,.06));border:1px solid rgba(52,199,89,.3);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px}
 .week-badge-label{font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;font-weight:700;margin-bottom:3px}
 .week-badge-title{font-size:16px;font-weight:700;color:var(--text)}
 .week-badge-sub{font-size:12px;color:var(--green);margin-top:2px;font-weight:500}
 
-/* ── NOTICE ── */
+/* NOTICE */
 .notice{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:#5d4037;margin-bottom:14px;line-height:1.5}
 
-/* ── INFO BOX ── */
+/* INFO BOX */
 .info-box{background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;display:none}
 .info-box.show{display:block}
 .info-btn{background:none;border:none;color:var(--primary);font-size:13px;font-family:inherit;cursor:pointer;font-weight:500}
 
-/* ── ADMIN ── */
+/* ADMIN */
 .admin-toggle{background:none;border:none;color:var(--text3);font-size:13px;font-family:inherit;cursor:pointer;padding:10px 0;display:flex;align-items:center;gap:6px;width:100%}
 .admin-section{display:none;background:var(--card2);border-radius:var(--radius);padding:14px;margin-top:6px}
 .admin-section.show{display:block}
 
-/* ── MISC ── */
+/* MISC */
 .sync-bar{text-align:center;padding:6px;font-size:12px;color:var(--primary);background:rgba(0,122,255,.06);display:none;font-weight:500}
 .err-bar{padding:10px 16px;background:rgba(255,59,48,.08);color:var(--red);font-size:13px;border-left:3px solid var(--red);margin:8px 16px;border-radius:6px;display:none}
-.toast{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:20px;font-size:14px;font-weight:500;display:none;z-index:9999;white-space:nowrap;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:20px;font-size:14px;font-weight:500;display:none;z-index:9999;white-space:nowrap;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .empty{text-align:center;padding:48px 0;color:var(--text3);font-size:15px;line-height:1.6}
 .lbl{display:block;font-size:12px;font-weight:600;color:var(--text3);margin:14px 0 6px;letter-spacing:.2px}
 
-/* ── AVATAR COLORS ── */
+/* AVATAR COLORS */
 .av0{background:#007aff}.av1{background:#34c759}.av2{background:#ff9500}.av3{background:#ff3b30}.av4{background:#af52de}.av5{background:#00c7be}.av6{background:#ff2d55}.av7{background:#5856d6}
 </style>
 </head>
@@ -160,15 +147,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
 
 <!-- RANKINGS PAGE -->
 <div class="page on" id="pg-r">
-  <div class="segment" style="margin-top:16px">
-    <button class="seg-btn on" onclick="goSub('season')">Season</button>
-    <button class="seg-btn" onclick="goSub('weekly')">Weekly</button>
+  <div style="display:flex;align-items:center;gap:8px;margin-top:16px;margin-bottom:16px">
+    <div class="segment" style="flex:1">
+      <button class="seg-btn on" onclick="goSub('season')">All-Time</button>
+      <button class="seg-btn" onclick="goSub('weekly')">Weekly</button>
+    </div>
+    <button class="btn-submit-sm" onclick="openSubmit()">＋ Submit</button>
   </div>
 
-  <!-- Season -->
+  <!-- All-Time -->
   <div id="view-season">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <div class="section-header" style="margin:0">Season Standings</div>
+      <div class="section-header" style="margin:0">All-Time Standings</div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="info-btn" onclick="toggleInfo()">ⓘ How it works</button>
         <button class="btn-refresh" onclick="load()">↻</button>
@@ -176,7 +166,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
     </div>
     <div class="info-box" id="infoBox">
       <strong>How rankings work</strong><br/>
-      Score = average rank × (eligible weeks ÷ weeks played). Missing a week multiplies your score upward — showing up consistently matters as much as playing well. Lower score = better. New players are measured from their first week only.
+      Score = average rank × (eligible weeks ÷ weeks played). Missing a week multiplies your score upward — showing up consistently matters as much as playing well. Lower score = better. New players are only measured from the week they first joined.
     </div>
     <div id="seasonList"></div>
   </div>
@@ -191,8 +181,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
     <div id="weeklyList"></div>
     <div id="weeklyMeta" style="font-size:12px;color:var(--text3);margin-top:8px;text-align:center;"></div>
   </div>
-
-  <button class="btn-submit" onclick="openSubmit()">＋ Submit This Week's Rankings</button>
 </div>
 
 <!-- SUBMIT OVERLAY -->
@@ -217,7 +205,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
         <input class="ios-input" id="newPlayerInline" placeholder="＋ New player name..." style="flex:1;font-size:14px;padding:10px 14px;" onkeydown="if(event.key==='Enter')addPlayerInline()"/>
         <button class="btn-primary" style="width:auto;padding:10px 16px;font-size:14px;" onclick="addPlayerInline()">Add</button>
       </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:14px;">New players are saved permanently and added to this week.</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:14px;">New players are saved permanently and selected for this week.</div>
 
       <div id="ia-sec" style="display:none">
         <div class="lbl">I Am...</div>
@@ -258,6 +246,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
       <input class="ios-input" id="ni" placeholder="Add player name..." style="flex:1" onkeydown="if(event.key==='Enter')addP()"/>
       <button class="btn-primary" style="width:auto;padding:13px 18px" onclick="addP()">Add</button>
     </div>
+
+    <div id="editPlayerRow" style="display:none;background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:8px">Editing: <span id="editingName"></span></div>
+      <div style="display:flex;gap:8px">
+        <input class="ios-input" id="editNameInput" placeholder="New name..." style="flex:1" onkeydown="if(event.key==='Enter')saveEdit()"/>
+        <button class="btn-primary" style="width:auto;padding:13px 16px" onclick="saveEdit()">Save</button>
+        <button class="btn-ghost" style="padding:13px 16px" onclick="cancelEdit()">✕</button>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:6px">All historical rankings will be updated to the new name.</div>
+    </div>
+
     <div class="card-group" id="pl"></div>
 
     <button class="admin-toggle" onclick="toggleAdmin()">
@@ -273,14 +272,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
   </div>
 </div>
 
-<!-- TAB BAR -->
-<div class="tab-bar">
-  <button class="tab-item on" onclick="goTab('r')" id="tab-r">
-    <span class="tab-icon">🏆</span>
-    <span class="tab-label" style="color:var(--primary)">Rankings</span>
-  </button>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -290,11 +281,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5dewgWuC199kSgx8qJbpoktxZx8BpkBrlrVWz7omDhR5b4F/exec';
 // =========================================================
 
-var U=localStorage.getItem('pb_url')||SCRIPT_URL;
-var P=[],S=[],WP=[],SM='',R={};
-var MIN_VOTES=4;
-var currentSub='season';
-var FACTS=[
+var U = localStorage.getItem('pb_url') || SCRIPT_URL;
+var P = [], S = [], WP = [], SM = '', R = {};
+var MIN_VOTES = 4;
+var currentSub = 'season';
+var editingPlayer = null;
+
+var FACTS = [
   {e:'🥒',t:"Pickleball is named after a dog. Inventor Joel Pritchard's dog Pickles kept chasing the ball and running off with it. At least someone was having fun."},
   {e:'👴',t:"Pickleball was invented in 1965 by three dads on Bainbridge Island, WA who were bored and had nothing else to do. Relatable."},
   {e:'📈',t:"Pickleball is the fastest growing sport in America. It grew 159% in three years. Your group is basically ahead of the curve."},
@@ -307,380 +300,4 @@ var FACTS=[
   {e:'🎱',t:"Pickleball paddles were originally made from plywood. Now they're made from aerospace-grade carbon fiber. The sport had a glow-up."},
   {e:'🧮',t:"You can only score a point when your team is serving. This rule was designed to extend rallies. It mostly just extends confusion."},
   {e:'🌍',t:"Pickleball is now played in over 70 countries. The world is slowly realizing what your group already knows."},
-  {e:'🍕',t:"A regulation pickleball court is 44 feet long and 20 feet wide — roughly the size of a two-car garage. You've been playing in a garage this whole time."},
-  {e:'🎤',t:"Pickleball makes a very distinct 'pop' sound when hit. Neighbors of outdoor courts have filed noise complaints. The sport is controversial."},
-  {e:'🐔',t:"Some say the name came from the term 'pickle boat' — the last boat to return in a crew race, filled with leftover oarsmen. Either story is weird."},
-  {e:'🏋️',t:"A one-hour pickleball game burns around 350-475 calories. That's roughly one large order of fries. Worth it."},
-  {e:'⚡',t:"The fastest recorded pickleball serve clocked in at 73 mph. That's fast enough that you definitely wouldn't see it coming."},
-  {e:'🧓',t:"At the 2023 US Open Pickleball Championships, the oldest competitor was 85 years old. There is no excuse for not showing up."},
-  {e:'🏠',t:"Backyard pickleball courts are now a legitimate real estate selling point. Your home value just went up."},
-  {e:'📺',t:"Pickleball has been broadcast on ESPN, CBS, and Fox Sports. Your Friday games are basically pre-pro scouting."},
-  {e:'🎰',t:"The probability of hitting the net on a dink shot increases dramatically when someone is watching. Science has not confirmed this, but everyone knows it's true."},
-  {e:'🧠',t:"Studies show pickleball improves cognitive function in older adults. So the more you play, the smarter you get. Unrelated to your ranking."},
-  {e:'🌞',t:"Outdoor pickleballs have 40 holes. Indoor pickleballs have 26 holes. This is genuinely one of the most important facts in this list."},
-  {e:'🤝',t:"Pickleball etiquette requires you to call your own faults honestly. The honor system is alive and well. Mostly."},
-  {e:'🎓',t:"Major universities now offer pickleball scholarships. The sport went from backyard fun to full academia in under 60 years."},
-  {e:'🥇',t:"The serve in pickleball must be made underhand. This is the only major racket sport with that rule. Pickleball does what it wants."},
-  {e:'🤖',t:"There is now an AI pickleball coach app that analyzes your swing. It probably ranks you better than your friends do."},
-  {e:'😂',t:"The official term for hitting the ball into the net is not a fault — it's just called 'sad.' (Okay that one isn't true. But it should be.)"},
-  {e:'🌮',t:"Joel Pritchard, one of pickleball's inventors, later became a US Congressman. He helped create two great American institutions."},
-  {e:'🔮',t:"At the current growth rate, every American will play pickleball by 2030. Resistance is futile."}
-];
-
-function showFact(){
-  var f=FACTS[Math.floor(Math.random()*FACTS.length)];
-  document.getElementById('pickleballFact').textContent=f.t;
-  document.getElementById('subOkEmoji').textContent=f.e;
-}
-
-function avatarColor(name){
-  var colors=['av0','av1','av2','av3','av4','av5','av6','av7'];
-  var i=0;for(var c=0;c<name.length;c++)i+=name.charCodeAt(c);
-  return colors[i%colors.length];
-}
-function initials(name){return name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);}
-
-// ── WEEK LOGIC ──
-function getCTOffset(date){
-  var y=date.getUTCFullYear();
-  var ds=getNthSunday(y,2,2),de=getNthSunday(y,10,1);
-  return (date>=ds&&date<de)?-5*3600000:-6*3600000;
-}
-function getNthSunday(y,m,n){
-  var d=new Date(Date.UTC(y,m,1));
-  var fs=1+(7-d.getUTCDay())%7;
-  return new Date(Date.UTC(y,m,fs+(n-1)*7,2,0,0));
-}
-function getCTNow(){var n=new Date();return new Date(n.getTime()+getCTOffset(n));}
-function getCurrentFriday(){
-  var ct=getCTNow(),day=ct.getUTCDay(),dsf=(day+2)%7,fri=new Date(ct);
-  fri.setUTCDate(ct.getUTCDate()-dsf);return fri;
-}
-function getWeekLabel(){
-  return 'Week of '+getCurrentFriday().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
-}
-function getDeadlineString(){
-  var thu=new Date(getCurrentFriday());thu.setUTCDate(thu.getUTCDate()+6);
-  return 'Closes Thu '+thu.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'})+' at 11:59pm CT';
-}
-function currentWeekVoteCount(){
-  var wk=getWeekLabel(),v=new Set();
-  S.forEach(function(r){if(r[1]===wk)v.add(r[2]);});return v.size;
-}
-function currentWeekLocked(){return currentWeekVoteCount()<MIN_VOTES;}
-
-// ── NAV ──
-function goTab(t){
-  document.querySelectorAll('.tab-item').forEach(function(e){e.classList.remove('on');e.querySelector('.tab-label').style.color='';});
-  var ti=document.getElementById('tab-'+t);
-  if(ti){ti.classList.add('on');ti.querySelector('.tab-label').style.color='var(--primary)';}
-  document.querySelectorAll('.page').forEach(function(e,i){e.classList.toggle('on',['r'][i]===t);});
-}
-function goSub(t){
-  currentSub=t;
-  document.querySelectorAll('.seg-btn').forEach(function(e,i){e.classList.toggle('on',['season','weekly'][i]===t);});
-  document.getElementById('view-season').style.display=t==='season'?'block':'none';
-  document.getElementById('view-weekly').style.display=t==='weekly'?'block':'none';
-  if(t==='weekly')populateWeekSelect();
-}
-function toggleInfo(){document.getElementById('infoBox').classList.toggle('show');}
-
-// ── OVERLAYS ──
-function openSubmit(){
-  document.getElementById('modalWeekTitle').textContent=getWeekLabel();
-  document.getElementById('modalDeadline').textContent=getDeadlineString();
-  renderWP();
-  document.getElementById('submitOverlay').classList.add('show');
-  document.body.style.overflow='hidden';
-}
-function closeSubmit(){document.getElementById('submitOverlay').classList.remove('show');document.body.style.overflow='';resetSubmit();}
-function closeSubmitIfBg(e){if(e.target===document.getElementById('submitOverlay'))closeSubmit();}
-function openSetup(){renderPL();updateSetupUI();document.getElementById('setupOverlay').classList.add('show');document.body.style.overflow='hidden';}
-function closeSetup(){document.getElementById('setupOverlay').classList.remove('show');document.body.style.overflow='';}
-function closeSetupIfBg(e){if(e.target===document.getElementById('setupOverlay'))closeSetup();}
-function toggleAdmin(){
-  var s=document.getElementById('adminSection'),a=document.getElementById('adminArrow');
-  var show=s.classList.toggle('show');a.textContent=show?'▼':'▶';
-}
-
-// ── UTILS ──
-function toast(m){var e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none';},2500);}
-function setErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display=m?'block':'none';}
-function setSyn(on){document.getElementById('sync').style.display=on?'block':'none';}
-
-async function api(data){
-  if(!U||U==='PASTE_YOUR_URL_HERE')throw new Error('No URL');
-  var r=await fetch(U+'?data='+encodeURIComponent(JSON.stringify(data)),{redirect:'follow'});
-  return JSON.parse(await r.text());
-}
-
-async function load(){
-  if(!U||U==='PASTE_YOUR_URL_HERE'){
-    document.getElementById('hMeta').textContent='Tap ⚙️ to connect';
-    document.getElementById('seasonList').innerHTML='<div class="empty">Tap ⚙️ to connect your Google Sheet and get started.</div>';
-    return;
-  }
-  setSyn(true);setErr('');
-  try{
-    var pd=await api({action:'getPlayers'});
-    var sd=await api({action:'getData'});
-    P=pd.players||[];S=sd.rows||[];
-    renderSeason();populateWeekSelect();renderHdr();renderPL();
-  }catch(e){setErr('Could not connect. '+e.message);}
-  setSyn(false);
-}
-
-function renderHdr(){
-  var w={};S.forEach(function(r){w[r[1]]=1;});
-  document.getElementById('hMeta').textContent=P.length+' players · '+Object.keys(w).length+' weeks · '+getWeekLabel();
-}
-
-// ── SCORING ──
-function getPlayerFirstWeekIdx(player,sortedWeeks){
-  for(var i=0;i<sortedWeeks.length;i++){
-    var wk=sortedWeeks[i];
-    var wkRows=S.filter(function(r){return r[1]===wk;});
-    if(wkRows.some(function(r){return r[2]===player||r[3]===player;}))return i;
-  }
-  return 0;
-}
-
-function calcScores(excludeWeeks){
-  excludeWeeks=excludeWeeks||[];
-  var weekDates={};
-  S.forEach(function(r){if(excludeWeeks.indexOf(r[1])<0&&!weekDates[r[1]])weekDates[r[1]]=r[0];});
-  var sortedWeeks=Object.keys(weekDates).sort(function(a,b){return new Date(weekDates[a])-new Date(weekDates[b]);});
-  var total=sortedWeeks.length;
-  return P.map(function(player){
-    var fi=getPlayerFirstWeekIdx(player,sortedWeeks);
-    var eligible=total-fi;
-    if(eligible<=0)return{n:player,score:null,avg:null,played:0,eligible:0};
-    var t=0,c=0;
-    S.forEach(function(r){if(r[3]===player&&excludeWeeks.indexOf(r[1])<0){t+=Number(r[4]);c++;}});
-    if(c===0)return{n:player,score:null,avg:null,played:0,eligible:eligible};
-    var played=new Set();
-    S.forEach(function(r){if(r[3]===player&&excludeWeeks.indexOf(r[1])<0)played.add(r[1]);});
-    var avg=t/c,score=avg*(eligible/played.size);
-    return{n:player,score:score,avg:avg,played:played.size,eligible:eligible};
-  });
-}
-
-function renderSeason(){
-  var currentWk=getWeekLabel();
-  var locked=currentWeekLocked();
-  var excludeForSeason=locked?[currentWk]:[];
-  var scores=calcScores(excludeForSeason);
-  var ranked=scores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
-  var unranked=scores.filter(function(p){return p.score===null;});
-  var all=ranked.concat(unranked);
-
-  // Prev week comparison (exclude current week always for prev)
-  var prevScores=calcScores([currentWk]);
-  var prevRanked=prevScores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
-  var prevMap={};prevRanked.forEach(function(p,i){prevMap[p.n]=i+1;});
-
-  var medals=['🥇','🥈','🥉'];
-  var el=document.getElementById('seasonList');
-
-  var votesIn=currentWeekVoteCount();
-  var needed=Math.max(0,MIN_VOTES-votesIn);
-  var notice='';
-  if(needed>0&&votesIn>0){
-    notice='<div class="notice">⏳ <strong>'+needed+' more vote'+(needed!==1?'s':'')+' needed</strong> before this week counts toward the season.</div>';
-  } else if(needed>0){
-    notice='<div class="notice">⏳ No votes yet this week. Season reflects previous weeks until <strong>'+MIN_VOTES+' people vote</strong>.</div>';
-  }
-
-  if(ranked.length===0){el.innerHTML=notice+'<div class="empty">No rankings yet.<br/>Submit this week to get started!</div>';return;}
-
-  el.innerHTML=notice+all.map(function(p,i){
-    var has=p.score!==null;
-    var arrow='';
-    if(has&&prevMap[p.n]!==undefined){
-      var diff=(i+1)-prevMap[p.n];
-      if(diff<0)arrow='<span class="arrow-up">▲</span>';
-      else if(diff>0)arrow='<span class="arrow-dn">▼</span>';
-    }
-    var missed=has&&p.eligible>p.played?'  ⚠️':'';
-    var sub=has?'Score: '+p.score.toFixed(2)+' · '+p.played+'/'+p.eligible+' weeks'+missed:'No data yet';
-    return '<div class="rank-card'+(i===0&&has?' top':'')+'">'
-      +'<div class="rank-pos">'+(has?(medals[i]||'#'+(i+1)):'—')+'</div>'
-      +'<div class="rank-avatar '+avatarColor(p.n)+'">'+initials(p.n)+'</div>'
-      +'<div style="flex:1"><div class="rank-name">'+p.n+arrow+'</div>'
-      +'<div class="rank-sub">'+sub+'</div></div>'
-      +(has?'<div class="rank-score">'+p.score.toFixed(1)+'</div>':'')
-      +'</div>';
-  }).join('');
-}
-
-// ── WEEKLY ──
-function getWeeks(){
-  var w={};S.forEach(function(r){if(!w[r[1]])w[r[1]]=[];w[r[1]].push(r);});
-  return Object.entries(w).sort(function(a,b){return new Date(b[1][0][0])-new Date(a[1][0][0]);});
-}
-function populateWeekSelect(){
-  var weeks=getWeeks(),sel=document.getElementById('weekSelect'),prev=sel.value;
-  sel.innerHTML='';
-  if(!weeks.length){sel.innerHTML='<option>No weeks yet</option>';return;}
-  weeks.forEach(function(w){
-    var opt=document.createElement('option');
-    opt.value=w[0];opt.textContent=w[0]+' · '+new Set(w[1].map(function(r){return r[2];})).size+' votes';
-    sel.appendChild(opt);
-  });
-  if(prev)sel.value=prev;
-  renderWeekly();
-}
-function renderWeekly(){
-  var wk=document.getElementById('weekSelect').value;
-  if(!wk||wk==='No weeks yet'){document.getElementById('weeklyList').innerHTML='<div class="empty">No weeks yet.</div>';return;}
-  var rows=S.filter(function(r){return r[1]===wk;});
-  var voters=new Set(rows.map(function(r){return r[2];}));
-  var needed=Math.max(0,MIN_VOTES-voters.size);
-  if(needed>0){
-    document.getElementById('weeklyList').innerHTML='<div class="notice" style="text-align:center">⏳ Rankings hidden until '+MIN_VOTES+' people vote.<br/><strong>'+needed+' more vote'+(needed!==1?'s':'')+' needed.</strong></div>';
-    document.getElementById('weeklyMeta').textContent=voters.size+' of '+MIN_VOTES+' votes submitted';
-    return;
-  }
-  var sc={};rows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
-  var ranked=Object.keys(sc).map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};}).sort(function(a,b){return a.a-b.a;});
-  var medals=['🥇','🥈','🥉'];
-  var subs=Array.from(voters);
-  document.getElementById('weeklyList').innerHTML=!ranked.length?'<div class="empty">No votes.</div>':ranked.map(function(p,i){
-    return '<div class="rank-card">'
-      +'<div class="rank-pos">'+(medals[i]||'#'+(i+1))+'</div>'
-      +'<div class="rank-avatar '+avatarColor(p.n)+'">'+initials(p.n)+'</div>'
-      +'<div style="flex:1"><div class="rank-name">'+p.n+'</div>'
-      +'<div class="rank-sub">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+'</div></div>'
-      +'<div class="rank-score">'+p.a.toFixed(1)+'</div></div>';
-  }).join('');
-  document.getElementById('weeklyMeta').textContent='Submitted by: '+subs.join(', ');
-}
-
-// ── SUBMIT ──
-function renderWP(){
-  var el=document.getElementById('wp');
-  if(!P.length){el.innerHTML='<span style="font-size:14px;color:var(--text3)">No players yet — add one below.</span>';return;}
-  el.innerHTML=P.map(function(p){var on=WP.indexOf(p)>=0;return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';}).join('');
-}
-
-async function addPlayerInline(){
-  var name=document.getElementById('newPlayerInline').value.trim();
-  if(!name)return;
-  if(P.indexOf(name)>=0){
-    // Player exists — just toggle them on
-    if(WP.indexOf(name)<0)WP.push(name);
-    document.getElementById('newPlayerInline').value='';
-    R={};SM='';renderWP();renderIASection();
-    toast(name+' selected!');
-    return;
-  }
-  var updated=P.concat([name]);
-  setSyn(true);
-  try{
-    var r=await api({action:'savePlayers',players:updated});
-    if(r.ok){
-      P=updated;
-      WP.push(name); // auto-select them as a player this week
-      document.getElementById('newPlayerInline').value='';
-      R={};SM='';
-      renderWP();renderIASection();renderPL();renderHdr();renderSeason();
-      toast(name+' added and selected!');
-    } else setErr('Error: '+JSON.stringify(r));
-  }catch(e){setErr('Failed to add player: '+e.message);}
-  setSyn(false);
-}
-function togWP(n){var i=WP.indexOf(n);if(i>=0)WP.splice(i,1);else WP.push(n);R={};SM='';renderWP();renderIASection();}
-function renderIASection(){
-  var ss=document.getElementById('ia-sec'),rs=document.getElementById('rk-sec');
-  if(WP.length<2){ss.style.display='none';rs.style.display='none';return;}
-  ss.style.display='block';
-  document.getElementById('ia').innerHTML=WP.map(function(p){var on=SM===p;return '<button class="chip'+(on?' on':'')+'" onclick="setSM(\''+p+'\')">'+p+'</button>';}).join('');
-  if(SM){rs.style.display='block';renderRR();}else rs.style.display='none';
-}
-function setSM(n){SM=n;R={};renderIASection();}
-function renderRR(){
-  var others=WP.filter(function(p){return p!==SM;});
-  document.getElementById('rr').innerHTML=others.map(function(p){
-    var btns='';
-    for(var r=1;r<=others.length;r++)btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';
-    return '<div class="rnk-row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;font-size:15px;">'+p+'</div><div class="rnk-btns">'+btns+'</div></div>';
-  }).join('');
-  document.getElementById('sbtn').disabled=!WP.filter(function(p){return p!==SM;}).every(function(p){return R[p]!==undefined;});
-}
-function setR(p,r){Object.keys(R).forEach(function(k){if(R[k]===r)delete R[k];});R[p]=r;renderRR();}
-async function doSub(){
-  var btn=document.getElementById('sbtn');
-  btn.disabled=true;
-  btn.textContent='Saving...';
-  var others=WP.filter(function(p){return p!==SM;});
-  setSyn(true);
-  try{
-    await api({action:'submitDedup',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
-    await load();
-    document.getElementById('submitFormInner').style.display='none';
-    document.getElementById('subOk').style.display='block';
-    showFact();
-    toast('Rankings saved! 🎉');
-  }catch(e){
-    setErr('Failed to save. '+e.message);
-    btn.disabled=false;
-    btn.textContent='Submit My Rankings';
-  }
-  setSyn(false);
-}
-function resetSubmit(){
-  SM='';R={};WP=[];
-  document.getElementById('submitFormInner').style.display='block';
-  document.getElementById('subOk').style.display='none';
-  renderWP();renderIASection();
-}
-
-// ── SETUP ──
-function saveUrl(){
-  var url=document.getElementById('si').value.trim();
-  if(!url.startsWith('https://')){alert('Please paste a valid https:// URL');return;}
-  localStorage.setItem('pb_url',url);U=url;
-  document.getElementById('si').value='';
-  updateSetupUI();load();toast('Connected!');
-}
-function updateSetupUI(){
-  var cs=document.getElementById('cs'),cu=document.getElementById('cu');
-  var ok=U&&U!=='PASTE_YOUR_URL_HERE';
-  cs.style.color=ok?'var(--green)':'var(--red)';
-  cs.textContent=ok?'✓ Connected':'⚠ Not Connected';
-  cu.textContent=ok?U:'';
-}
-function renderPL(){
-  var el=document.getElementById('pl');
-  if(!P.length){el.innerHTML='<div style="padding:14px 16px;font-size:14px;color:var(--text3)">No players yet.</div>';return;}
-  el.innerHTML=P.map(function(p){
-    return '<div class="card-row"><div class="rank-avatar '+avatarColor(p)+'" style="width:32px;height:32px;font-size:12px;flex-shrink:0;">'+initials(p)+'</div>'
-      +'<div style="flex:1;font-weight:600;font-size:15px;">'+p+'</div>'
-      +'<button class="btn-destructive" onclick="remP(\''+p+'\')">Remove</button></div>';
-  }).join('');
-}
-async function addP(){
-  var name=document.getElementById('ni').value.trim();
-  if(!name||P.indexOf(name)>=0)return;
-  var updated=P.concat([name]);setSyn(true);
-  try{
-    var r=await api({action:'savePlayers',players:updated});
-    if(r.ok){P=updated;document.getElementById('ni').value='';renderPL();renderWP();renderHdr();renderSeason();toast(name+' added!');}
-    else setErr('Error: '+JSON.stringify(r));
-  }catch(e){setErr('Failed: '+e.message);}
-  setSyn(false);
-}
-async function remP(name){
-  var updated=P.filter(function(p){return p!==name;});setSyn(true);
-  try{
-    await api({action:'savePlayers',players:updated});
-    P=updated;renderPL();renderWP();renderHdr();renderSeason();toast(name+' removed');
-  }catch(e){setErr('Failed to remove.');}
-  setSyn(false);
-}
-
-updateSetupUI();
-load();
-</script>
-</body>
-</html>
+  {e:'🍕',t:"A regulation pickleball court is 44 feet long and 20 feet wide — roughly the size of a two-car garage. You've been
