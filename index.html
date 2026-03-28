@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Pickleball HQ</title>
+<title>Pickleball Power Rankings</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#f5f5f5;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
@@ -40,7 +40,6 @@ input:focus{border-color:#1a1a1a}
 .conn-box{border:1px solid #eee;border-radius:12px;padding:16px;margin-bottom:20px;background:#fff}
 .conn-box.ok{border-color:#4caf50}
 .conn-box.no{border-color:#f44336}
-.conn-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
 .success{text-align:center;padding:48px 0}
 .flex{display:flex;gap:8px}
 .between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
@@ -52,13 +51,19 @@ input:focus{border-color:#1a1a1a}
 .trend-up{color:#2e7d32;font-size:11px;font-weight:600}
 .trend-dn{color:#c62828;font-size:11px;font-weight:600}
 .trend-eq{color:#888;font-size:11px}
+.week-banner{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:12px 16px;margin-bottom:16px}
+.week-banner.open{border-color:#4caf50;background:#f0faf0}
+.week-banner.closed{border-color:#f44336;background:#fff0f0}
+.week-banner-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-weight:600}
+.week-banner-title{font-size:16px;font-weight:700}
+.week-banner-sub{font-size:12px;margin-top:3px}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="header-sub">Power Rankings</div>
-  <div class="header-title">🏓 Pickleball HQ</div>
+  <div class="header-title">🏓 Pickleball Power Rankings</div>
   <div class="header-meta" id="hMeta">Loading...</div>
 </div>
 
@@ -80,14 +85,10 @@ input:focus{border-color:#1a1a1a}
     </div>
     <button class="btn-out" onclick="load()">↻ Refresh</button>
   </div>
-
-  <!-- Season view -->
   <div id="view-season">
     <div class="sec-title" style="margin-bottom:12px">All-time season standings</div>
     <div id="seasonList"></div>
   </div>
-
-  <!-- Weekly view -->
   <div id="view-weekly" style="display:none">
     <div class="sec-title" style="margin-bottom:8px">Select a week</div>
     <select class="week-select" id="weekSelect" onchange="renderWeekly()"></select>
@@ -99,19 +100,24 @@ input:focus{border-color:#1a1a1a}
 <!-- SUBMIT -->
 <div class="page" id="pg-s">
   <div id="sf">
-    <span class="lbl">Week Label</span>
-    <input id="wl"/>
-    <span class="lbl">Who Played?</span>
-    <div class="chips" id="wp"></div>
-    <div id="ia-sec" style="display:none">
-      <span class="lbl">I Am...</span>
-      <div class="chips" id="ia"></div>
+    <div class="week-banner" id="weekBanner">
+      <div class="week-banner-label" id="weekBannerLabel">Current Week</div>
+      <div class="week-banner-title" id="weekBannerTitle">—</div>
+      <div class="week-banner-sub" id="weekBannerSub"></div>
     </div>
-    <div id="rk-sec" style="display:none">
-      <span class="lbl">Rank the Others (1 = Best)</span>
-      <p style="font-size:12px;color:#888;margin:6px 0 10px">Each number can only be used once.</p>
-      <div id="rr"></div>
-      <button class="btn btn-full" id="sbtn" disabled onclick="doSub()">Submit Rankings →</button>
+    <div id="submitOpen">
+      <span class="lbl">Who Played?</span>
+      <div class="chips" id="wp"></div>
+      <div id="ia-sec" style="display:none">
+        <span class="lbl">I Am...</span>
+        <div class="chips" id="ia"></div>
+      </div>
+      <div id="rk-sec" style="display:none">
+        <span class="lbl">Rank the Others (1 = Best)</span>
+        <p style="font-size:12px;color:#888;margin:6px 0 10px">Each number can only be used once.</p>
+        <div id="rr"></div>
+        <button class="btn btn-full" id="sbtn" disabled onclick="doSub()">Submit Rankings →</button>
+      </div>
     </div>
   </div>
   <div class="success" id="ok" style="display:none">
@@ -125,10 +131,10 @@ input:focus{border-color:#1a1a1a}
 <!-- SETUP -->
 <div class="page" id="pg-p">
   <div class="conn-box" id="cb">
-    <div class="conn-label" id="cs">Checking connection...</div>
+    <div id="cs" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:600;">Checking connection...</div>
     <div id="cu" style="font-size:11px;color:#888;word-break:break-all;margin-bottom:10px"></div>
-    <span class="lbl" style="margin-top:0">Override Script URL (optional)</span>
-    <input id="si" placeholder="Paste a different URL to override..."/>
+    <span class="lbl" style="margin-top:0">Apps Script URL</span>
+    <input id="si" placeholder="Paste your Google Apps Script URL..."/>
     <button class="btn" style="margin-top:8px" onclick="saveUrl()">Save URL</button>
   </div>
   <div id="pm" style="display:none">
@@ -154,12 +160,91 @@ var U=localStorage.getItem('pb_url')||SCRIPT_URL;
 var P=[],S=[],WP=[],SM='',R={};
 var currentSubtab='season';
 
-var d=new Date();
-document.getElementById('wl').value='Week of '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+// ── WEEK LOGIC ──
+// Week runs Friday 12:00am CT through Thursday 11:59pm CT
+// Returns the Friday date that started the current week
+function getCurrentFriday() {
+  // Get current time in Central Time
+  var now = new Date();
+  var ctOffset = getCTOffset(now);
+  var ctNow = new Date(now.getTime() + ctOffset);
 
+  var day = ctNow.getUTCDay(); // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  // Days since last Friday: Fri=0, Sat=1, Sun=2, Mon=3, Tue=4, Wed=5, Thu=6
+  var daysSinceFriday = (day + 2) % 7;
+  var friday = new Date(ctNow);
+  friday.setUTCDate(ctNow.getUTCDate() - daysSinceFriday);
+  return friday;
+}
+
+function getCTOffset(date) {
+  // Central Time: UTC-6 (CST) or UTC-5 (CDT)
+  // CDT: 2nd Sun March - 1st Sun Nov
+  var year = date.getUTCFullYear();
+  var dstStart = getNthSundayUTC(year, 2, 2); // 2nd Sun of March
+  var dstEnd = getNthSundayUTC(year, 10, 1);  // 1st Sun of November
+  var isDST = date >= dstStart && date < dstEnd;
+  return isDST ? -5*60*60*1000 : -6*60*60*1000;
+}
+
+function getNthSundayUTC(year, month, n) {
+  var d = new Date(Date.UTC(year, month, 1));
+  var day = d.getUTCDay();
+  var firstSunday = 1 + (7 - day) % 7;
+  var nthSunday = firstSunday + (n-1)*7;
+  return new Date(Date.UTC(year, month, nthSunday, 2, 0, 0)); // 2am local = transition
+}
+
+function getWeekLabel() {
+  var friday = getCurrentFriday();
+  return 'Week of ' + friday.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'});
+}
+
+function isSubmissionOpen() {
+  // Open from Friday 12:00am CT through Thursday 11:59:59pm CT
+  var now = new Date();
+  var ctOffset = getCTOffset(now);
+  var ctNow = new Date(now.getTime() + ctOffset);
+  var day = ctNow.getUTCDay();
+  // Open Fri(5), Sat(6), Sun(0), Mon(1), Tue(2), Wed(3), Thu(4)
+  // Closed only if it's past Thursday 11:59pm — which never happens since Friday opens it again
+  // So it's always open — but on Thursday, check if past 11:59pm
+  if (day === 4) { // Thursday
+    var hours = ctNow.getUTCHours();
+    var mins = ctNow.getUTCMinutes();
+    if (hours === 23 && mins === 59) return false;
+    // After midnight Thursday = still Thursday in UTC but we're fine until 11:59pm
+  }
+  return true; // always open Fri-Thu
+}
+
+function getDeadlineString() {
+  // Find the coming Thursday
+  var friday = getCurrentFriday();
+  var thursday = new Date(friday);
+  thursday.setUTCDate(friday.getUTCDate() + 6);
+  return 'Closes Thu ' + thursday.toLocaleDateString('en-US', {month:'short', day:'numeric', timeZone:'UTC'}) + ' at 11:59pm CT';
+}
+
+function renderWeekBanner() {
+  var banner = document.getElementById('weekBanner');
+  var title = document.getElementById('weekBannerTitle');
+  var sub = document.getElementById('weekBannerSub');
+  var label = document.getElementById('weekBannerLabel');
+  banner.className = 'week-banner open';
+  label.style.color = '#2e7d32';
+  label.textContent = 'Submissions Open';
+  title.textContent = getWeekLabel();
+  sub.textContent = getDeadlineString();
+  sub.style.color = '#2e7d32';
+  document.getElementById('submitOpen').style.display = 'block';
+}
+
+// ── CORE ──
 function goTab(t){
   document.querySelectorAll('.tab').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
   document.querySelectorAll('.page').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
+  if(t==='s') renderWeekBanner();
 }
 
 function goSubtab(t){
@@ -197,26 +282,17 @@ async function load(){
   setSyn(false);
 }
 
-function renderAll(){
-  renderSeason();
-  populateWeekSelect();
-  if(currentSubtab==='weekly') renderWeekly();
-  renderWP();renderPL();renderHdr();
-}
+function renderAll(){renderSeason();populateWeekSelect();if(currentSubtab==='weekly')renderWeekly();renderWP();renderPL();renderHdr();}
 
 function renderHdr(){
   var w={};S.forEach(function(r){w[r[1]]=1;});
-  document.getElementById('hMeta').textContent=P.length+' players · '+Object.keys(w).length+' weeks';
+  document.getElementById('hMeta').textContent=(U&&U!=='PASTE_YOUR_URL_HERE'?P.length+' players · '+Object.keys(w).length+' weeks · ':'')+getWeekLabel();
 }
 
-// ── SEASON RANKINGS ──
+// ── SEASON ──
 function calcScores(rows){
-  var sc={};
-  P.forEach(function(p){sc[p]={t:0,c:0};});
-  rows.forEach(function(r){
-    var p=r[3];if(!sc[p])sc[p]={t:0,c:0};
-    sc[p].t+=Number(r[4]);sc[p].c++;
-  });
+  var sc={};P.forEach(function(p){sc[p]={t:0,c:0};});
+  rows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
   return sc;
 }
 
@@ -240,16 +316,11 @@ function renderSeason(){
   }).join('');
 }
 
-// ── WEEKLY RANKINGS ──
+// ── WEEKLY ──
 function getWeeks(){
   var w={};
   S.forEach(function(r){if(!w[r[1]])w[r[1]]=[];w[r[1]].push(r);});
-  // Sort weeks by most recent first using first timestamp in each week
-  var entries=Object.entries(w).sort(function(a,b){
-    var ta=a[1][0][0],tb=b[1][0][0];
-    return new Date(tb)-new Date(ta);
-  });
-  return entries;
+  return Object.entries(w).sort(function(a,b){return new Date(b[1][0][0])-new Date(a[1][0][0]);});
 }
 
 function populateWeekSelect(){
@@ -260,50 +331,27 @@ function populateWeekSelect(){
   if(weeks.length===0){sel.innerHTML='<option>No weeks yet</option>';return;}
   weeks.forEach(function(w){
     var opt=document.createElement('option');
-    opt.value=w[0];opt.textContent=w[0]+' ('+new Set(w[1].map(function(r){return r[2];})).size+' submitted)';
+    opt.value=w[0];
+    opt.textContent=w[0]+' ('+new Set(w[1].map(function(r){return r[2];})).size+' submitted)';
     sel.appendChild(opt);
   });
   if(prev) sel.value=prev;
 }
 
 function renderWeekly(){
-  var sel=document.getElementById('weekSelect');
-  var weekName=sel.value;
-  if(!weekName||weekName==='No weeks yet'){
-    document.getElementById('weeklyList').innerHTML='<div class="empty">No weeks yet.</div>';
-    return;
-  }
+  var weekName=document.getElementById('weekSelect').value;
+  if(!weekName||weekName==='No weeks yet'){document.getElementById('weeklyList').innerHTML='<div class="empty">No weeks yet.</div>';return;}
   var weekRows=S.filter(function(r){return r[1]===weekName;});
-  var sc={}; // scores just for this week
-  // only include players who received votes this week
-  weekRows.forEach(function(r){
-    var p=r[3];if(!sc[p])sc[p]={t:0,c:0};
-    sc[p].t+=Number(r[4]);sc[p].c++;
-  });
-
-  // Also compute season scores EXCLUDING this week for trend comparison
-  var prevRows=S.filter(function(r){return r[1]!==weekName;});
-  var prevSc=calcScores(prevRows);
-
-  var ranked=Object.keys(sc)
-    .map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};})
-    .sort(function(a,b){return a.a-b.a;});
-
-  // Season rank (all time)
+  var sc={};
+  weekRows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
+  var ranked=Object.keys(sc).map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};}).sort(function(a,b){return a.a-b.a;});
   var seasonSc=calcScores(S);
-  var seasonRanked=P.filter(function(p){return seasonSc[p]&&seasonSc[p].c>0;})
-    .map(function(p){return{n:p,a:seasonSc[p].t/seasonSc[p].c};})
-    .sort(function(a,b){return a.a-b.a;});
-  var seasonRankMap={};
-  seasonRanked.forEach(function(p,i){seasonRankMap[p.n]=i+1;});
-
+  var seasonRanked=P.filter(function(p){return seasonSc[p]&&seasonSc[p].c>0;}).map(function(p){return{n:p,a:seasonSc[p].t/seasonSc[p].c};}).sort(function(a,b){return a.a-b.a;});
+  var srMap={};seasonRanked.forEach(function(p,i){srMap[p.n]=i+1;});
   var medals=['🥇','🥈','🥉'];
   var submitters=Array.from(new Set(weekRows.map(function(r){return r[2];})));
-
   document.getElementById('weeklyList').innerHTML=ranked.map(function(p,i){
-    var sr=seasonRankMap[p.n];
-    var diff=sr?(i+1)-sr:null;
-    var trend='';
+    var sr=srMap[p.n],diff=sr?(i+1)-sr:null,trend='';
     if(diff!==null&&diff<0)trend='<span class="trend-up">▲ '+Math.abs(diff)+' vs season</span>';
     else if(diff!==null&&diff>0)trend='<span class="trend-dn">▼ '+Math.abs(diff)+' vs season</span>';
     else if(diff===0)trend='<span class="trend-eq">= season rank</span>';
@@ -311,10 +359,8 @@ function renderWeekly(){
       +'<div class="medal">'+(medals[i]||'#'+(i+1))+'</div>'
       +'<div style="flex:1"><div style="font-weight:600;font-size:15px;">'+p.n+'</div>'
       +'<div style="font-size:11px;color:#888;margin-top:2px;">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+' '+trend+'</div></div>'
-      +'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div>'
-      +'</div>';
+      +'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div></div>';
   }).join('');
-
   document.getElementById('weeklyMeta').textContent='Submitted by: '+submitters.join(', ');
 }
 
@@ -322,10 +368,7 @@ function renderWeekly(){
 function renderWP(){
   var el=document.getElementById('wp');
   if(P.length===0){el.innerHTML='<span style="font-size:13px;color:#888;">Add players in Setup first.</span>';return;}
-  el.innerHTML=P.map(function(p){
-    var on=WP.indexOf(p)>=0;
-    return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';
-  }).join('');
+  el.innerHTML=P.map(function(p){var on=WP.indexOf(p)>=0;return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';}).join('');
 }
 
 function togWP(n){var i=WP.indexOf(n);if(i>=0)WP.splice(i,1);else WP.push(n);R={};SM='';renderWP();renderIASection();}
@@ -334,10 +377,7 @@ function renderIASection(){
   var ss=document.getElementById('ia-sec'),rs=document.getElementById('rk-sec');
   if(WP.length<2){ss.style.display='none';rs.style.display='none';return;}
   ss.style.display='block';
-  document.getElementById('ia').innerHTML=WP.map(function(p){
-    var on=SM===p;
-    return '<button class="chip'+(on?' on':'')+'" onclick="setSM(\''+p+'\')">'+p+'</button>';
-  }).join('');
+  document.getElementById('ia').innerHTML=WP.map(function(p){var on=SM===p;return '<button class="chip'+(on?' on':'')+'" onclick="setSM(\''+p+'\')">'+p+'</button>';}).join('');
   if(SM){rs.style.display='block';renderRR();}else rs.style.display='none';
 }
 
@@ -347,13 +387,10 @@ function renderRR(){
   var others=WP.filter(function(p){return p!==SM;});
   document.getElementById('rr').innerHTML=others.map(function(p){
     var btns='';
-    for(var r=1;r<=others.length;r++){
-      btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';
-    }
+    for(var r=1;r<=others.length;r++){btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';}
     return '<div class="row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;">'+p+'</div><div style="display:flex;gap:5px;">'+btns+'</div></div>';
   }).join('');
-  var others2=WP.filter(function(p){return p!==SM;});
-  document.getElementById('sbtn').disabled=!others2.every(function(p){return R[p]!==undefined;});
+  document.getElementById('sbtn').disabled=!WP.filter(function(p){return p!==SM;}).every(function(p){return R[p]!==undefined;});
 }
 
 function setR(p,r){Object.keys(R).forEach(function(k){if(R[k]===r)delete R[k];});R[p]=r;renderRR();}
@@ -362,7 +399,7 @@ async function doSub(){
   var others=WP.filter(function(p){return p!==SM;});
   setSyn(true);
   try{
-    await api({action:'submit',week:document.getElementById('wl').value,submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
+    await api({action:'submit',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
     await load();
     document.getElementById('sf').style.display='none';
     document.getElementById('ok').style.display='block';
@@ -387,7 +424,7 @@ function updateSetup(){
   var ready=U&&U!=='PASTE_YOUR_URL_HERE';
   cb.className='conn-box '+(ready?'ok':'no');
   cs.style.color=ready?'#4caf50':'#f44336';
-  cs.textContent=ready?'✓ Connected':'⚠ Not Connected — paste URL below';
+  cs.textContent=ready?'✓ Connected':'⚠ Not Connected';
   cu.textContent=ready?U:'';
   pm.style.display=ready?'block':'none';
 }
@@ -426,6 +463,7 @@ async function remP(name){
 }
 
 updateSetup();
+renderWeekBanner();
 load();
 </script>
 </body>
