@@ -572,15 +572,22 @@ function renderRR(){
 }
 function setR(p,r){Object.keys(R).forEach(function(k){if(R[k]===r)delete R[k];});R[p]=r;renderRR();}
 async function doSub(){
+  var btn=document.getElementById('sbtn');
+  btn.disabled=true;
+  btn.textContent='Saving...';
   var others=WP.filter(function(p){return p!==SM;});
   setSyn(true);
   try{
-    await api({action:'submit',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
+    await api({action:'submitDedup',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
     await load();
     document.getElementById('submitFormInner').style.display='none';
     document.getElementById('subOk').style.display='block';
     toast('Rankings saved! 🎉');
-  }catch(e){setErr('Failed to save. '+e.message);}
+  }catch(e){
+    setErr('Failed to save. '+e.message);
+    btn.disabled=false;
+    btn.textContent='Submit My Rankings';
+  }
   setSyn(false);
 }
 function resetSubmit(){
