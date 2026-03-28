@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pickleball HQ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f5f5;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+.header{background:#1a1a1a;padding:20px 16px 14px}
+.header-sub{font-size:10px;letter-spacing:3px;color:#888;text-transform:uppercase;margin-bottom:4px}
+.header-title{font-size:24px;font-weight:700;color:#fff}
+.header-meta{font-size:12px;color:#888;margin-top:4px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #e0e0e0}
+.tab{flex:1;padding:13px 4px;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-size:12px;font-family:inherit;color:#888}
+.tab.on{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:600}
+.page{display:none;padding:16px;max-width:520px;margin:0 auto}
+.page.on{display:block}
+.lbl{display:block;font-size:10px;letter-spacing:2px;color:#888;text-transform:uppercase;margin-bottom:6px;margin-top:14px}
+input{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;outline:none;background:#fff}
+input:focus{border-color:#1a1a1a}
+.btn{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer}
+.btn:disabled{background:#ccc;cursor:not-allowed}
+.btn-full{width:100%;margin-top:10px}
+.btn-out{background:#fff;color:#1a1a1a;border:1px solid #ddd;border-radius:8px;padding:6px 12px;font-family:inherit;font-weight:600;font-size:12px;cursor:pointer}
+.btn-red{background:none;border:1px solid #fcc;color:#c00;border-radius:6px;padding:4px 10px;font-size:12px;font-family:inherit;cursor:pointer}
+.card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.chip{padding:7px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-size:13px;font-family:inherit}
+.chip.on{border-color:#1a1a1a;background:#f0f0f0;color:#1a1a1a;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.rnk{width:34px;height:34px;border-radius:7px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-family:inherit;font-weight:600;font-size:13px}
+.rnk.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.row{display:flex;align-items:center;gap:10px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-bottom:8px}
+.row.done{background:#f0faf0;border-color:#b0ddb0}
+.sync{text-align:center;padding:8px;font-size:11px;color:#888;background:#fff;display:none}
+.err{padding:10px 16px;background:#fff0f0;color:#c00;font-size:13px;border-left:3px solid #c00;margin:8px 16px;border-radius:4px;display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:9px 22px;border-radius:20px;font-size:13px;display:none;z-index:999;white-space:nowrap}
+.empty{text-align:center;padding:40px 0;color:#888;font-size:13px}
+.medal{font-size:18px;width:28px;text-align:center}
+.conn-box{border:1px solid #eee;border-radius:12px;padding:16px;margin-bottom:20px;background:#fff}
+.conn-box.ok{border-color:#4caf50}
+.conn-box.no{border-color:#f44336}
+.conn-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.success{text-align:center;padding:48px 0}
+.flex{display:flex;gap:8px}
+.between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sec-title{font-size:10px;letter-spacing:2px;color:#888;text-transform:uppercase}
+.subtabs{display:flex;gap:8px;margin-bottom:16px}
+.subtab{padding:7px 16px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;font-size:13px;font-family:inherit;font-weight:400}
+.subtab.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a;font-weight:600}
+.week-select{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;background:#fff;margin-bottom:14px;outline:none}
+.trend-up{color:#2e7d32;font-size:11px;font-weight:600}
+.trend-dn{color:#c62828;font-size:11px;font-weight:600}
+.trend-eq{color:#888;font-size:11px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-sub">Power Rankings</div>
+  <div class="header-title">🏓 Pickleball HQ</div>
+  <div class="header-meta" id="hMeta">Loading...</div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="goTab('r')">🏠 Rankings</button>
+  <button class="tab" onclick="goTab('s')">📋 Submit</button>
+  <button class="tab" onclick="goTab('p')">⚙️ Setup</button>
+</div>
+
+<div class="sync" id="sync">Syncing with Google Sheets...</div>
+<div class="err" id="err"></div>
+
+<!-- RANKINGS -->
+<div class="page on" id="pg-r">
+  <div class="between">
+    <div class="subtabs">
+      <button class="subtab on" onclick="goSubtab('season')">Season</button>
+      <button class="subtab" onclick="goSubtab('weekly')">Weekly</button>
+    </div>
+    <button class="btn-out" onclick="load()">↻ Refresh</button>
+  </div>
+
+  <!-- Season view -->
+  <div id="view-season">
+    <div class="sec-title" style="margin-bottom:12px">All-time season standings</div>
+    <div id="seasonList"></div>
+  </div>
+
+  <!-- Weekly view -->
+  <div id="view-weekly" style="display:none">
+    <div class="sec-title" style="margin-bottom:8px">Select a week</div>
+    <select class="week-select" id="weekSelect" onchange="renderWeekly()"></select>
+    <div id="weeklyList"></div>
+    <div id="weeklyMeta" style="font-size:12px;color:#888;margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="page" id="pg-s">
+  <div id="sf">
+    <span class="lbl">Week Label</span>
+    <input id="wl"/>
+    <span class="lbl">Who Played?</span>
+    <div class="chips" id="wp"></div>
+    <div id="ia-sec" style="display:none">
+      <span class="lbl">I Am...</span>
+      <div class="chips" id="ia"></div>
+    </div>
+    <div id="rk-sec" style="display:none">
+      <span class="lbl">Rank the Others (1 = Best)</span>
+      <p style="font-size:12px;color:#888;margin:6px 0 10px">Each number can only be used once.</p>
+      <div id="rr"></div>
+      <button class="btn btn-full" id="sbtn" disabled onclick="doSub()">Submit Rankings →</button>
+    </div>
+  </div>
+  <div class="success" id="ok" style="display:none">
+    <div style="font-size:48px;margin-bottom:12px">✅</div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:8px">Rankings Saved!</div>
+    <div style="color:#888;font-size:13px;margin-bottom:24px">Pass to the next player.</div>
+    <button class="btn" onclick="reset()">Next Player →</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="page" id="pg-p">
+  <div class="conn-box" id="cb">
+    <div class="conn-label" id="cs">Checking connection...</div>
+    <div id="cu" style="font-size:11px;color:#888;word-break:break-all;margin-bottom:10px"></div>
+    <span class="lbl" style="margin-top:0">Override Script URL (optional)</span>
+    <input id="si" placeholder="Paste a different URL to override..."/>
+    <button class="btn" style="margin-top:8px" onclick="saveUrl()">Save URL</button>
+  </div>
+  <div id="pm" style="display:none">
+    <div class="sec-title" style="margin-bottom:10px">Players</div>
+    <div class="flex" style="margin-bottom:12px">
+      <input id="ni" placeholder="Player name..." style="flex:1" onkeydown="if(event.key==='Enter')addP()"/>
+      <button class="btn" onclick="addP()">Add</button>
+    </div>
+    <div id="pl"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =========================================================
+// PASTE YOUR GOOGLE APPS SCRIPT URL BETWEEN THE QUOTES BELOW
+// =========================================================
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5dewgWuC199kSgx8qJbpoktxZx8BpkBrlrVWz7omDhR5b4F/exec';
+// =========================================================
+
+var U=localStorage.getItem('pb_url')||SCRIPT_URL;
+var P=[],S=[],WP=[],SM='',R={};
+var currentSubtab='season';
+
+var d=new Date();
+document.getElementById('wl').value='Week of '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+function goTab(t){
+  document.querySelectorAll('.tab').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
+  document.querySelectorAll('.page').forEach(function(e,i){e.classList.toggle('on',['r','s','p'][i]===t);});
+}
+
+function goSubtab(t){
+  currentSubtab=t;
+  document.querySelectorAll('.subtab').forEach(function(e,i){e.classList.toggle('on',['season','weekly'][i]===t);});
+  document.getElementById('view-season').style.display=t==='season'?'block':'none';
+  document.getElementById('view-weekly').style.display=t==='weekly'?'block':'none';
+  if(t==='weekly') populateWeekSelect();
+}
+
+function toast(m){var e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none';},2500);}
+function setErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display=m?'block':'none';}
+function setSyn(on){document.getElementById('sync').style.display=on?'block':'none';}
+
+async function api(data){
+  if(!U||U==='PASTE_YOUR_URL_HERE')throw new Error('No URL configured');
+  var r=await fetch(U+'?data='+encodeURIComponent(JSON.stringify(data)),{redirect:'follow'});
+  var txt=await r.text();
+  try{return JSON.parse(txt);}catch(e){throw new Error('Bad response: '+txt.slice(0,80));}
+}
+
+async function load(){
+  if(!U||U==='PASTE_YOUR_URL_HERE'){
+    document.getElementById('hMeta').textContent='Not connected — see Setup tab';
+    document.getElementById('seasonList').innerHTML='<div class="empty">Paste your Script URL in Setup to get started.</div>';
+    updateSetup();return;
+  }
+  setSyn(true);setErr('');
+  try{
+    var pd=await api({action:'getPlayers'});
+    var sd=await api({action:'getData'});
+    P=pd.players||[];S=sd.rows||[];
+    renderAll();
+  }catch(e){setErr('Could not connect. Error: '+e.message);}
+  setSyn(false);
+}
+
+function renderAll(){
+  renderSeason();
+  populateWeekSelect();
+  if(currentSubtab==='weekly') renderWeekly();
+  renderWP();renderPL();renderHdr();
+}
+
+function renderHdr(){
+  var w={};S.forEach(function(r){w[r[1]]=1;});
+  document.getElementById('hMeta').textContent=P.length+' players · '+Object.keys(w).length+' weeks';
+}
+
+// ── SEASON RANKINGS ──
+function calcScores(rows){
+  var sc={};
+  P.forEach(function(p){sc[p]={t:0,c:0};});
+  rows.forEach(function(r){
+    var p=r[3];if(!sc[p])sc[p]={t:0,c:0};
+    sc[p].t+=Number(r[4]);sc[p].c++;
+  });
+  return sc;
+}
+
+function renderSeason(){
+  var sc=calcScores(S);
+  var ranked=P.filter(function(p){return sc[p]&&sc[p].c>0;})
+    .map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};})
+    .sort(function(a,b){return a.a-b.a;});
+  var unranked=P.filter(function(p){return!sc[p]||sc[p].c===0;}).map(function(p){return{n:p,a:null,v:0};});
+  var all=ranked.concat(unranked);
+  var medals=['🥇','🥈','🥉'];
+  var el=document.getElementById('seasonList');
+  if(ranked.length===0){el.innerHTML='<div class="empty">No rankings yet — submit a week!</div>';return;}
+  el.innerHTML=all.map(function(p,i){
+    return '<div class="card" style="display:flex;align-items:center;gap:12px;">'
+      +'<div class="medal">'+(p.a!==null?(medals[i]||'#'+(i+1)):'—')+'</div>'
+      +'<div style="flex:1"><div style="font-weight:600;font-size:15px;">'+p.n+'</div>'
+      +'<div style="font-size:11px;color:#888;margin-top:2px;">'+(p.a!==null?'Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':''):'No votes yet')+'</div></div>'
+      +(p.a!==null?'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+// ── WEEKLY RANKINGS ──
+function getWeeks(){
+  var w={};
+  S.forEach(function(r){if(!w[r[1]])w[r[1]]=[];w[r[1]].push(r);});
+  // Sort weeks by most recent first using first timestamp in each week
+  var entries=Object.entries(w).sort(function(a,b){
+    var ta=a[1][0][0],tb=b[1][0][0];
+    return new Date(tb)-new Date(ta);
+  });
+  return entries;
+}
+
+function populateWeekSelect(){
+  var weeks=getWeeks();
+  var sel=document.getElementById('weekSelect');
+  var prev=sel.value;
+  sel.innerHTML='';
+  if(weeks.length===0){sel.innerHTML='<option>No weeks yet</option>';return;}
+  weeks.forEach(function(w){
+    var opt=document.createElement('option');
+    opt.value=w[0];opt.textContent=w[0]+' ('+new Set(w[1].map(function(r){return r[2];})).size+' submitted)';
+    sel.appendChild(opt);
+  });
+  if(prev) sel.value=prev;
+}
+
+function renderWeekly(){
+  var sel=document.getElementById('weekSelect');
+  var weekName=sel.value;
+  if(!weekName||weekName==='No weeks yet'){
+    document.getElementById('weeklyList').innerHTML='<div class="empty">No weeks yet.</div>';
+    return;
+  }
+  var weekRows=S.filter(function(r){return r[1]===weekName;});
+  var sc={}; // scores just for this week
+  // only include players who received votes this week
+  weekRows.forEach(function(r){
+    var p=r[3];if(!sc[p])sc[p]={t:0,c:0};
+    sc[p].t+=Number(r[4]);sc[p].c++;
+  });
+
+  // Also compute season scores EXCLUDING this week for trend comparison
+  var prevRows=S.filter(function(r){return r[1]!==weekName;});
+  var prevSc=calcScores(prevRows);
+
+  var ranked=Object.keys(sc)
+    .map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};})
+    .sort(function(a,b){return a.a-b.a;});
+
+  // Season rank (all time)
+  var seasonSc=calcScores(S);
+  var seasonRanked=P.filter(function(p){return seasonSc[p]&&seasonSc[p].c>0;})
+    .map(function(p){return{n:p,a:seasonSc[p].t/seasonSc[p].c};})
+    .sort(function(a,b){return a.a-b.a;});
+  var seasonRankMap={};
+  seasonRanked.forEach(function(p,i){seasonRankMap[p.n]=i+1;});
+
+  var medals=['🥇','🥈','🥉'];
+  var submitters=Array.from(new Set(weekRows.map(function(r){return r[2];})));
+
+  document.getElementById('weeklyList').innerHTML=ranked.map(function(p,i){
+    var sr=seasonRankMap[p.n];
+    var diff=sr?(i+1)-sr:null;
+    var trend='';
+    if(diff!==null&&diff<0)trend='<span class="trend-up">▲ '+Math.abs(diff)+' vs season</span>';
+    else if(diff!==null&&diff>0)trend='<span class="trend-dn">▼ '+Math.abs(diff)+' vs season</span>';
+    else if(diff===0)trend='<span class="trend-eq">= season rank</span>';
+    return '<div class="card" style="display:flex;align-items:center;gap:12px;">'
+      +'<div class="medal">'+(medals[i]||'#'+(i+1))+'</div>'
+      +'<div style="flex:1"><div style="font-weight:600;font-size:15px;">'+p.n+'</div>'
+      +'<div style="font-size:11px;color:#888;margin-top:2px;">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+' '+trend+'</div></div>'
+      +'<div style="font-size:20px;font-weight:700;color:#444;">'+p.a.toFixed(1)+'</div>'
+      +'</div>';
+  }).join('');
+
+  document.getElementById('weeklyMeta').textContent='Submitted by: '+submitters.join(', ');
+}
+
+// ── SUBMIT ──
+function renderWP(){
+  var el=document.getElementById('wp');
+  if(P.length===0){el.innerHTML='<span style="font-size:13px;color:#888;">Add players in Setup first.</span>';return;}
+  el.innerHTML=P.map(function(p){
+    var on=WP.indexOf(p)>=0;
+    return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';
+  }).join('');
+}
+
+function togWP(n){var i=WP.indexOf(n);if(i>=0)WP.splice(i,1);else WP.push(n);R={};SM='';renderWP();renderIASection();}
+
+function renderIASection(){
+  var ss=document.getElementById('ia-sec'),rs=document.getElementById('rk-sec');
+  if(WP.length<2){ss.style.display='none';rs.style.display='none';return;}
+  ss.style.display='block';
+  document.getElementById('ia').innerHTML=WP.map(function(p){
+    var on=SM===p;
+    return '<button class="chip'+(on?' on':'')+'" onclick="setSM(\''+p+'\')">'+p+'</button>';
+  }).join('');
+  if(SM){rs.style.display='block';renderRR();}else rs.style.display='none';
+}
+
+function setSM(n){SM=n;R={};renderIASection();}
+
+function renderRR(){
+  var others=WP.filter(function(p){return p!==SM;});
+  document.getElementById('rr').innerHTML=others.map(function(p){
+    var btns='';
+    for(var r=1;r<=others.length;r++){
+      btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';
+    }
+    return '<div class="row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;">'+p+'</div><div style="display:flex;gap:5px;">'+btns+'</div></div>';
+  }).join('');
+  var others2=WP.filter(function(p){return p!==SM;});
+  document.getElementById('sbtn').disabled=!others2.every(function(p){return R[p]!==undefined;});
+}
+
+function setR(p,r){Object.keys(R).forEach(function(k){if(R[k]===r)delete R[k];});R[p]=r;renderRR();}
+
+async function doSub(){
+  var others=WP.filter(function(p){return p!==SM;});
+  setSyn(true);
+  try{
+    await api({action:'submit',week:document.getElementById('wl').value,submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
+    await load();
+    document.getElementById('sf').style.display='none';
+    document.getElementById('ok').style.display='block';
+    toast('Rankings saved! 🎉');
+  }catch(e){setErr('Failed to save. Error: '+e.message);}
+  setSyn(false);
+}
+
+function reset(){SM='';R={};WP=[];document.getElementById('sf').style.display='block';document.getElementById('ok').style.display='none';renderWP();renderIASection();}
+
+// ── SETUP ──
+function saveUrl(){
+  var url=document.getElementById('si').value.trim();
+  if(!url.startsWith('https://')){setErr('Please paste a valid https:// URL');return;}
+  localStorage.setItem('pb_url',url);U=url;
+  document.getElementById('si').value='';
+  updateSetup();load();toast('URL saved!');
+}
+
+function updateSetup(){
+  var cb=document.getElementById('cb'),cs=document.getElementById('cs'),cu=document.getElementById('cu'),pm=document.getElementById('pm');
+  var ready=U&&U!=='PASTE_YOUR_URL_HERE';
+  cb.className='conn-box '+(ready?'ok':'no');
+  cs.style.color=ready?'#4caf50':'#f44336';
+  cs.textContent=ready?'✓ Connected':'⚠ Not Connected — paste URL below';
+  cu.textContent=ready?U:'';
+  pm.style.display=ready?'block':'none';
+}
+
+function renderPL(){
+  var el=document.getElementById('pl');
+  if(P.length===0){el.innerHTML='<div class="empty" style="padding:16px 0;">No players yet.</div>';return;}
+  el.innerHTML=P.map(function(p){
+    return '<div style="display:flex;align-items:center;justify-content:space-between;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-bottom:8px;">'
+      +'<span style="font-weight:600;">'+p+'</span>'
+      +'<button class="btn-red" onclick="remP(\''+p+'\')">Remove</button></div>';
+  }).join('');
+}
+
+async function addP(){
+  var name=document.getElementById('ni').value.trim();
+  if(!name||P.indexOf(name)>=0)return;
+  var updated=P.concat([name]);
+  setSyn(true);
+  try{
+    var r=await api({action:'savePlayers',players:updated});
+    if(r.ok){P=updated;document.getElementById('ni').value='';renderPL();renderWP();renderHdr();toast(name+' added!');}
+    else setErr('Script error: '+JSON.stringify(r));
+  }catch(e){setErr('Failed: '+e.message);}
+  setSyn(false);
+}
+
+async function remP(name){
+  var updated=P.filter(function(p){return p!==name;});
+  setSyn(true);
+  try{
+    await api({action:'savePlayers',players:updated});
+    P=updated;renderPL();renderWP();renderHdr();toast(name+' removed');
+  }catch(e){setErr('Failed to remove.');}
+  setSyn(false);
+}
+
+updateSetup();
+load();
+</script>
+</body>
+</html>
