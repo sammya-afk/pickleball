@@ -5,631 +5,614 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<title>Pickleball Power Rankings</title>
+<title>Friday Pickleball</title>
 <style>
 :root{
-  --bg:#f2f2f7;--card:#ffffff;--card2:#f2f2f7;--border:rgba(60,60,67,0.12);
-  --label:rgba(60,60,67,0.6);--primary:#007aff;--green:#34c759;--red:#ff3b30;
-  --orange:#ff9500;--yellow-bg:#fff9e6;--yellow-border:#ffd60a;
-  --text:#000000;--text2:#3c3c43;--text3:rgba(60,60,67,0.6);
-  --separator:rgba(60,60,67,0.12);--nav-bg:rgba(242,242,247,0.85);
-  --modal-bg:#ffffff;--radius:12px;--radius-lg:16px;
+  --bg:#f2f2f7;--card:#fff;--card2:#f2f2f7;
+  --primary:#007aff;--green:#34c759;--red:#ff3b30;--orange:#ff9500;--purple:#af52de;
+  --text:#000;--text2:#3c3c43;--text3:rgba(60,60,67,.6);
+  --sep:rgba(60,60,67,.12);--nav:rgba(242,242,247,.92);
+  --radius:12px;--radius-lg:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg)}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--text);padding-bottom:24px;overflow-x:hidden}
-.ios-header{background:var(--nav-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:0.5px solid var(--separator);padding:54px 16px 12px;position:sticky;top:0;z-index:100}
-.ios-header-top{display:flex;justify-content:space-between;align-items:center}
-.ios-header-title{font-size:28px;font-weight:700;letter-spacing:-.5px;color:var(--text)}
-.ios-header-sub{font-size:13px;color:var(--text3);margin-top:2px}
-.gear-btn{background:var(--card2);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text3);flex-shrink:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--text);padding-bottom:80px;overflow-x:hidden}
+
+/* HEADER */
+.hdr{background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep);padding:52px 16px 12px;position:sticky;top:0;z-index:100}
+.hdr-row{display:flex;justify-content:space-between;align-items:center}
+.hdr-title{font-size:26px;font-weight:700;letter-spacing:-.5px}
+.hdr-sub{font-size:13px;color:var(--text3);margin-top:2px}
+.gear{background:var(--card2);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* TAB BAR */
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--sep);display:flex;padding:8px 0 calc(10px + env(safe-area-inset-bottom));z-index:100}
+.tbi{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:2px 0;font-family:inherit}
+.tbi-icon{font-size:22px;line-height:1}
+.tbi-label{font-size:10px;font-weight:500;color:var(--text3)}
+.tbi.on .tbi-label{color:var(--primary)}
+
+/* PAGES */
 .page{display:none;padding:16px;max-width:540px;margin:0 auto}
 .page.on{display:block}
-.section-header{font-size:13px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:0 4px;margin:20px 0 8px}
-.section-header:first-child{margin-top:0}
-.card-group{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
-.card-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:0.5px solid var(--separator)}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-group{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.card-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:.5px solid var(--sep)}
 .card-row:last-child{border-bottom:none}
-.rank-card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-.rank-card.top{background:linear-gradient(135deg,#fff9e6 0%,#fffdf5 100%);box-shadow:0 2px 8px rgba(255,184,0,0.15)}
-.rank-pos{font-size:22px;width:32px;text-align:center;flex-shrink:0}
-.rank-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;color:#fff}
-.rank-name{font-size:16px;font-weight:600;letter-spacing:-.2px;display:flex;align-items:center;gap:6px}
-.rank-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.arrow-up{color:var(--green);font-size:15px}
-.arrow-dn{color:var(--red);font-size:15px}
-.segment{display:flex;background:rgba(120,120,128,0.12);border-radius:8px;padding:2px}
-.seg-btn{flex:1;padding:6px 0;border:none;background:none;font-family:inherit;font-size:13px;font-weight:500;color:var(--text3);border-radius:6px;cursor:pointer;transition:all .2s}
-.seg-btn.on{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.12)}
-.ios-input{width:100%;background:var(--card);border:none;border-radius:var(--radius);padding:13px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;-webkit-appearance:none}
-.ios-select{width:100%;background:var(--card);border:none;border-radius:var(--radius);padding:13px 16px;font-family:inherit;font-size:15px;color:var(--text);outline:none;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;margin-bottom:12px}
-.btn-primary{width:100%;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);padding:15px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:-.2px}
-.btn-primary:disabled{opacity:.4;cursor:not-allowed}
-.btn-submit-sm{background:var(--green);color:#fff;border:none;border-radius:20px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(52,199,89,.3);flex-shrink:0}
-.btn-ghost{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:var(--radius);padding:13px 20px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
-.btn-destructive{background:none;border:none;color:var(--red);font-family:inherit;font-size:14px;cursor:pointer;padding:4px 0}
-.btn-refresh{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.sec{font-size:13px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin:20px 0 8px;padding:0 4px}
+.sec:first-child{margin-top:4px}
+
+/* BUTTONS */
+.btn{background:var(--primary);color:#fff;border:none;border-radius:var(--radius);padding:14px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-green{background:var(--green)}
+.btn-red{background:var(--red)}
+.btn-orange{background:var(--orange)}
+.btn-ghost{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:var(--radius);padding:13px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;width:100%}
+.btn-sm{padding:8px 16px;font-size:14px;border-radius:20px;width:auto}
+.btn-icon{background:none;border:none;font-size:20px;cursor:pointer;padding:4px}
+.btn-dest{background:none;border:none;color:var(--red);font-size:13px;font-family:inherit;cursor:pointer}
+
+/* INPUTS */
+.ios-input{width:100%;background:var(--card);border:none;border-radius:var(--radius);padding:13px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none}
+
+/* RSVP PLAYER TILE */
+.player-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.player-tile{background:var(--card);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.06);border:2px solid transparent;transition:all .15s;position:relative}
+.player-tile.in{border-color:var(--green);background:#f0fef4}
+.player-tile.out{border-color:var(--red);background:#fff5f5;opacity:.7}
+.player-tile-name{font-size:15px;font-weight:600;margin-bottom:6px}
+.player-tile-status{font-size:22px;line-height:1}
+.player-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;margin:0 auto 8px}
+
+/* HEADCOUNT BANNER */
+.hc-banner{border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;text-align:center}
+.hc-banner.waiting{background:#fff8e1;border:1px solid #ffd60a}
+.hc-banner.ready{background:#f0fef4;border:1px solid rgba(52,199,89,.4)}
+.hc-banner.cancelled{background:#fff5f5;border:1px solid rgba(255,59,48,.3)}
+.hc-count{font-size:36px;font-weight:800;letter-spacing:-1px}
+.hc-label{font-size:14px;font-weight:500;margin-top:2px}
+.hc-names{font-size:13px;color:var(--text3);margin-top:6px}
+
+/* TEAMS */
+.team-card{border-radius:var(--radius-lg);padding:18px;margin-bottom:12px;text-align:center}
+.team-a{background:linear-gradient(135deg,#e3f2fd,#f0f8ff);border:1px solid rgba(0,122,255,.2)}
+.team-b{background:linear-gradient(135deg,#fce4ec,#fff5f7);border:1px solid rgba(255,59,48,.2)}
+.team-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.team-players{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.team-avatars{display:flex;justify-content:center;gap:8px;margin-bottom:8px}
+.vs-badge{text-align:center;font-size:13px;font-weight:700;color:var(--text3);margin:4px 0 12px;letter-spacing:1px}
+
+/* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.chip{padding:8px 16px;border-radius:20px;border:1.5px solid var(--separator);background:var(--card);color:var(--text3);cursor:pointer;font-size:14px;font-family:inherit;font-weight:500;transition:all .15s}
+.chip{padding:8px 16px;border-radius:20px;border:1.5px solid var(--sep);background:var(--card);color:var(--text3);cursor:pointer;font-size:14px;font-family:inherit;font-weight:500}
 .chip.on{border-color:var(--primary);background:rgba(0,122,255,.08);color:var(--primary);font-weight:600}
-.rnk-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-.rnk-row.done{background:#f0fef4}
-.rnk-btns{display:flex;gap:6px;flex-wrap:wrap}
-.rnk{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--separator);background:var(--card2);color:var(--text3);cursor:pointer;font-family:inherit;font-weight:600;font-size:15px;transition:all .15s}
-.rnk.on{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.05)}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+
+/* STAT CARDS */
+.stat-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:.5px solid var(--sep)}
+.stat-row:last-child{border-bottom:none}
+.stat-icon{font-size:24px;width:36px;text-align:center}
+.stat-val{font-size:20px;font-weight:700;margin-left:auto;color:var(--text2)}
+.stat-badge{background:var(--primary);color:#fff;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;margin-left:auto}
+
+/* OVERLAYS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .overlay.show{display:block}
-.sheet{background:var(--modal-bg);border-radius:20px 20px 0 0;position:absolute;bottom:0;left:0;right:0;min-height:75vh;max-height:94vh;overflow-y:auto;padding:0 16px calc(32px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0)}
+.sheet{background:var(--card);border-radius:20px 20px 0 0;position:absolute;bottom:0;left:0;right:0;max-height:92vh;overflow-y:auto;padding:0 16px calc(32px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0)}
 .overlay.show .sheet{transform:translateY(0);transition:transform .35s cubic-bezier(.33,1,.68,1)}
 .sheet-handle{width:36px;height:4px;background:rgba(60,60,67,.18);border-radius:2px;margin:10px auto 16px}
-.sheet-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.3px}
-.sheet-close{background:rgba(120,120,128,.14);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.week-badge{background:linear-gradient(135deg,rgba(52,199,89,.12),rgba(52,199,89,.06));border:1px solid rgba(52,199,89,.3);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px}
-.week-badge-label{font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;font-weight:700;margin-bottom:3px}
-.week-badge-title{font-size:16px;font-weight:700;color:var(--text)}
-.week-badge-sub{font-size:12px;color:var(--green);margin-top:2px;font-weight:500}
-.notice{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:#5d4037;margin-bottom:14px;line-height:1.5}
-.info-box{background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;display:none}
-.info-box.show{display:block}
-.info-btn{background:none;border:none;color:var(--primary);font-size:13px;font-family:inherit;cursor:pointer;font-weight:500}
+.sheet-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sheet-title{font-size:18px;font-weight:700}
+.sheet-close{background:rgba(120,120,128,.14);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;color:var(--text3);cursor:pointer}
+
+/* MISC */
+.sync{text-align:center;padding:6px;font-size:12px;color:var(--primary);background:rgba(0,122,255,.06);display:none;font-weight:500}
+.err{padding:10px 16px;background:rgba(255,59,48,.08);color:var(--red);font-size:13px;border-left:3px solid var(--red);margin:8px 16px;border-radius:6px;display:none}
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.82);color:#fff;padding:10px 22px;border-radius:20px;font-size:14px;font-weight:500;display:none;z-index:9999;white-space:nowrap}
+.empty{text-align:center;padding:40px 0;color:var(--text3);font-size:15px;line-height:1.7}
+.lbl{display:block;font-size:12px;font-weight:600;color:var(--text3);margin:12px 0 6px}
 .admin-toggle{background:none;border:none;color:var(--text3);font-size:13px;font-family:inherit;cursor:pointer;padding:10px 0;display:flex;align-items:center;gap:6px;width:100%}
 .admin-section{display:none;background:var(--card2);border-radius:var(--radius);padding:14px;margin-top:6px}
 .admin-section.show{display:block}
-.sync-bar{text-align:center;padding:6px;font-size:12px;color:var(--primary);background:rgba(0,122,255,.06);display:none;font-weight:500}
-.err-bar{padding:10px 16px;background:rgba(255,59,48,.08);color:var(--red);font-size:13px;border-left:3px solid var(--red);margin:8px 16px;border-radius:6px;display:none}
-.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:20px;font-size:14px;font-weight:500;display:none;z-index:9999;white-space:nowrap;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.empty{text-align:center;padding:48px 0;color:var(--text3);font-size:15px;line-height:1.6}
-.lbl{display:block;font-size:12px;font-weight:600;color:var(--text3);margin:14px 0 6px;letter-spacing:.2px}
+.copy-btn{background:rgba(0,122,255,.08);color:var(--primary);border:none;border-radius:var(--radius);padding:13px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;width:100%;margin-top:10px}
+.score-row{display:flex;align-items:center;justify-content:space-between;background:var(--card2);border-radius:10px;padding:12px 14px;margin-bottom:8px}
 .av0{background:#007aff}.av1{background:#34c759}.av2{background:#ff9500}.av3{background:#ff3b30}.av4{background:#af52de}.av5{background:#00c7be}.av6{background:#ff2d55}.av7{background:#5856d6}
 </style>
 </head>
 <body>
 
-<div class="ios-header">
-  <div class="ios-header-top">
+<div class="hdr">
+  <div class="hdr-row">
     <div>
-      <div class="ios-header-title">🏓 Power Rankings</div>
-      <div class="ios-header-sub" id="hMeta">Loading...</div>
+      <div class="hdr-title">🏓 Friday Pickleball</div>
+      <div class="hdr-sub" id="hdrSub">Loading...</div>
     </div>
-    <button class="gear-btn" onclick="openSetup()">⚙️</button>
+    <button class="gear" onclick="openSetup()">⚙️</button>
   </div>
 </div>
 
-<div class="sync-bar" id="sync">Syncing...</div>
-<div class="err-bar" id="err"></div>
+<div class="sync" id="sync">Syncing...</div>
+<div class="err" id="err"></div>
 
-<div class="page on" id="pg-r">
-  <div style="display:flex;align-items:center;gap:8px;margin-top:16px;margin-bottom:16px">
-    <div class="segment" style="flex:1">
-      <button class="seg-btn on" onclick="goSub('season')">All-Time</button>
-      <button class="seg-btn" onclick="goSub('weekly')">Weekly</button>
-    </div>
-    <button class="btn-submit-sm" onclick="openSubmit()">＋ Submit</button>
+<!-- RSVP PAGE -->
+<div class="page on" id="pg-rsvp">
+  <div id="hcBanner" class="hc-banner waiting" style="margin-top:16px">
+    <div class="hc-count" id="hcCount">0/4</div>
+    <div class="hc-label" id="hcLabel">Waiting for players...</div>
+    <div class="hc-names" id="hcNames"></div>
   </div>
-
-  <div id="view-season">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <div class="section-header" style="margin:0">All-Time Standings</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="info-btn" onclick="toggleInfo()">ⓘ How it works</button>
-        <button class="btn-refresh" onclick="load()">↻</button>
-      </div>
-    </div>
-    <div class="info-box" id="infoBox">
-      <strong>How rankings work</strong><br/>
-      Score = average rank × (eligible weeks ÷ weeks played). Missing a week multiplies your score upward — showing up consistently matters as much as playing well. Lower score = better. New players are measured from their first week only.
-    </div>
-    <div id="seasonList"></div>
+  <div id="copySection" style="display:none">
+    <button class="copy-btn" onclick="copyGroupMsg()">📋 Copy message for group chat</button>
   </div>
+  <div class="sec">Who's in this Friday?</div>
+  <div class="player-grid" id="rsvpGrid"></div>
+  <button class="btn btn-ghost" style="margin-top:4px" onclick="openAddPlayer()">＋ Add Player</button>
+</div>
 
-  <div id="view-weekly" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <div class="section-header" style="margin:0">Weekly Results</div>
-      <button class="btn-refresh" onclick="load()">↻</button>
+<!-- TEAMS PAGE -->
+<div class="page" id="pg-teams">
+  <div style="margin-top:16px" id="teamsContent">
+    <div class="empty" id="teamsEmpty">Mark at least 4 players as <strong>In</strong> on the RSVP tab first, then come back to draw teams!</div>
+    <div id="teamsMain" style="display:none">
+      <div id="currentTeams"></div>
+      <div id="gameLog"></div>
     </div>
-    <select class="ios-select" id="weekSelect" onchange="renderWeekly()"></select>
-    <div id="weeklyList"></div>
-    <div id="weeklyMeta" style="font-size:12px;color:var(--text3);margin-top:8px;text-align:center;"></div>
   </div>
 </div>
 
-<!-- SUBMIT OVERLAY -->
-<div class="overlay" id="submitOverlay" onclick="closeSubmitIfBg(event)">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <div class="sheet-title">Submit Rankings</div>
-      <button class="sheet-close" onclick="closeSubmit()">✕</button>
-    </div>
-    <div id="submitFormInner">
-      <div class="week-badge">
-        <div class="week-badge-label">Current Week</div>
-        <div class="week-badge-title" id="modalWeekTitle">—</div>
-        <div class="week-badge-sub" id="modalDeadline"></div>
-      </div>
-      <div class="lbl">Who Played?</div>
-      <div class="chips" id="wp"></div>
-      <div style="display:flex;gap:8px;margin-top:10px;margin-bottom:4px;">
-        <input class="ios-input" id="newPlayerInline" placeholder="＋ New player name..." style="flex:1;font-size:14px;padding:10px 14px;" onkeydown="if(event.key==='Enter')addPlayerInline()"/>
-        <button class="btn-primary" style="width:auto;padding:10px 16px;font-size:14px;" onclick="addPlayerInline()">Add</button>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:14px;">New players are saved permanently and added to this week.</div>
-      <div id="ia-sec" style="display:none">
-        <div class="lbl">I Am...</div>
-        <div class="chips" id="ia"></div>
-      </div>
-      <div id="rk-sec" style="display:none">
-        <div class="lbl">Rank the Others <span style="font-weight:400;color:var(--text3)">(1 = best)</span></div>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Each number can only be used once.</p>
-        <div id="rr"></div>
-        <button class="btn-primary" id="sbtn" disabled onclick="doSub()" style="margin-top:4px">Submit My Rankings</button>
-      </div>
-    </div>
-    <div id="subOk" style="display:none;text-align:center;padding:28px 0">
-      <div style="font-size:48px;margin-bottom:14px" id="subOkEmoji">🏓</div>
-      <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text)">Rankings Saved!</div>
-      <div style="background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:var(--radius);padding:16px 18px;margin-bottom:24px;text-align:left">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--primary);text-transform:uppercase;margin-bottom:8px">🥒 Did You Know?</div>
-        <div style="font-size:15px;color:var(--text2);line-height:1.6" id="pickleballFact"></div>
-      </div>
-      <button class="btn-primary" onclick="closeSubmit()">Done</button>
-    </div>
+<!-- STATS PAGE -->
+<div class="page" id="pg-stats">
+  <div style="margin-top:16px">
+    <div class="sec">This Friday</div>
+    <div class="card-group" id="statsFriday"></div>
+    <div class="sec">All-Time Fun Stats</div>
+    <div class="card-group" id="statsAllTime"></div>
+    <div class="sec">Head-to-Head</div>
+    <div class="card-group" id="statsH2H"></div>
   </div>
 </div>
 
 <!-- SETUP OVERLAY -->
-<div class="overlay" id="setupOverlay" onclick="closeSetupIfBg(event)">
+<div class="overlay" id="setupOverlay" onclick="closeBg(event,'setupOverlay')">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-header">
+    <div class="sheet-hdr">
       <div class="sheet-title">Settings</div>
       <button class="sheet-close" onclick="closeSetup()">✕</button>
     </div>
-    <div class="section-header">Players</div>
+    <div class="sec" style="margin-top:0">Players</div>
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <input class="ios-input" id="ni" placeholder="Add player name..." style="flex:1" onkeydown="if(event.key==='Enter')addP()"/>
-      <button class="btn-primary" style="width:auto;padding:13px 18px" onclick="addP()">Add</button>
+      <input class="ios-input" id="ni" placeholder="Full name..." style="flex:1" onkeydown="if(event.key==='Enter')addP()"/>
+      <button class="btn btn-sm" onclick="addP()">Add</button>
     </div>
-    <div id="editPlayerRow" style="display:none;background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px">
-      <div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:8px">Editing: <span id="editingName"></span></div>
-      <div style="display:flex;gap:8px">
-        <input class="ios-input" id="editNameInput" placeholder="New name..." style="flex:1" onkeydown="if(event.key==='Enter')saveEdit()"/>
-        <button class="btn-primary" style="width:auto;padding:13px 16px" onclick="saveEdit()">Save</button>
-        <button class="btn-ghost" style="padding:13px 16px" onclick="cancelEdit()">✕</button>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:6px">All historical rankings will be updated to the new name.</div>
-    </div>
-    <div class="card-group" id="pl"></div>
-    <button class="admin-toggle" onclick="toggleAdmin()">
-      <span id="adminArrow">▶</span> Admin Settings
-    </button>
+    <div class="card-group" id="playerList"></div>
+    <button class="admin-toggle" onclick="toggleAdmin()"><span id="adminArrow">▶</span> Admin Settings</button>
     <div class="admin-section" id="adminSection">
-      <div id="cs" style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--red)">⚠ Not Connected</div>
-      <div id="cu" style="font-size:11px;color:var(--text3);word-break:break-all;margin-bottom:10px"></div>
+      <div id="connStatus" style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:6px">⚠ Not Connected</div>
+      <div id="connUrl" style="font-size:11px;color:var(--text3);word-break:break-all;margin-bottom:10px"></div>
       <div class="lbl" style="margin-top:0">Apps Script URL</div>
-      <input class="ios-input" id="si" placeholder="https://script.google.com/macros/s/..." style="margin-bottom:8px"/>
-      <button class="btn-primary" onclick="saveUrl()">Save URL</button>
+      <input class="ios-input" id="scriptInput" placeholder="https://script.google.com/macros/s/..." style="margin-bottom:8px"/>
+      <button class="btn" onclick="saveUrl()">Save URL</button>
     </div>
   </div>
+</div>
+
+<!-- ADD PLAYER OVERLAY -->
+<div class="overlay" id="addPlayerOverlay" onclick="closeBg(event,'addPlayerOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <div class="sheet-title">Add Player</div>
+      <button class="sheet-close" onclick="closeAddPlayer()">✕</button>
+    </div>
+    <div class="lbl">Full Name</div>
+    <input class="ios-input" id="quickAddName" placeholder="e.g. John Smith" onkeydown="if(event.key==='Enter')quickAddP()"/>
+    <button class="btn" style="margin-top:12px" onclick="quickAddP()">Add to Group</button>
+  </div>
+</div>
+
+<!-- LOG GAME OVERLAY -->
+<div class="overlay" id="logOverlay" onclick="closeBg(event,'logOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <div class="sheet-title">Log Game Result</div>
+      <button class="sheet-close" onclick="closeLog()">✕</button>
+    </div>
+    <div id="logContent"></div>
+  </div>
+</div>
+
+<div class="tabbar">
+  <button class="tbi on" onclick="goTab('rsvp')" id="tab-rsvp">
+    <span class="tbi-icon">✅</span>
+    <span class="tbi-label" style="color:var(--primary)">RSVP</span>
+  </button>
+  <button class="tbi" onclick="goTab('teams')" id="tab-teams">
+    <span class="tbi-icon">🏓</span>
+    <span class="tbi-label">Teams</span>
+  </button>
+  <button class="tbi" onclick="goTab('stats')" id="tab-stats">
+    <span class="tbi-icon">📊</span>
+    <span class="tbi-label">Stats</span>
+  </button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// =========================================================
-// PASTE YOUR GOOGLE APPS SCRIPT URL BETWEEN THE QUOTES BELOW
-// =========================================================
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5dewgWuC199kSgx8qJbpoktxZx8BpkBrlrVWz7omDhR5b4F/exec';
-// =========================================================
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbx3WMXFc1oaiaEUdAdLq5dewgWuC199kSgx8qJbpoktxZx8BpkBrlrVWz7omDhR5b4F/exec';
+var U=localStorage.getItem('pb2_url')||SCRIPT_URL;
+var PLAYERS=[],RSVP={},GAMES=[],CURRENT_TEAMS=null;
+var MIN_PLAYERS=4;
 
-var U=localStorage.getItem('pb_url')||SCRIPT_URL;
-var P=[],S=[],WP=[],SM='',R={};
-var MIN_VOTES=4;
-var currentSub='season';
-var editingPlayer=null;
+// ── AVATAR ──
+function avColor(n){var c=['av0','av1','av2','av3','av4','av5','av6','av7'],i=0;for(var x=0;x<n.length;x++)i+=n.charCodeAt(x);return c[i%c.length];}
+function initials(n){return n.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);}
+function avEl(n,size){size=size||38;return '<div class="player-avatar '+avColor(n)+'" style="width:'+size+'px;height:'+size+'px;font-size:'+(size*.38)+'px;">'+initials(n)+'</div>';}
 
-var FACTS=[
-  {e:'🥒',t:"Pickleball is named after a dog. Inventor Joel Pritchard's dog Pickles kept chasing the ball and running off with it. At least someone was having fun."},
-  {e:'👴',t:"Pickleball was invented in 1965 by three dads on Bainbridge Island, WA who were bored and had nothing else to do. Relatable."},
-  {e:'📈',t:"Pickleball is the fastest growing sport in America. It grew 159% in three years. Your group is basically ahead of the curve."},
-  {e:'🎾',t:"The original pickleball net was a badminton net lowered a couple inches. Innovation at its finest."},
-  {e:'🏓',t:"A regulation pickleball has exactly 26-40 holes in it. Nobody knows why that range is so wide. The sport lives in chaos."},
-  {e:'👴🏼',t:"The average age of a pickleball player is 38. But the most dedicated players are 55+. The seniors are coming for your ranking."},
-  {e:'🤫',t:"The kitchen — the non-volley zone — is the most important 7 feet in the game. Also the most argued-about 7 feet in any sport."},
-  {e:'💰',t:"Professional pickleball players can earn over $100,000 a year. Meanwhile, you're playing for bragging rights and a spot on this leaderboard."},
-  {e:'🏆',t:"The USA Pickleball National Championships draws over 3,000 players. Your group just needs 4 votes to update the rankings."},
-  {e:'🎱',t:"Pickleball paddles were originally made from plywood. Now they're made from aerospace-grade carbon fiber. The sport had a glow-up."},
-  {e:'🧮',t:"You can only score a point when your team is serving. This rule was designed to extend rallies. It mostly just extends confusion."},
-  {e:'🌍',t:"Pickleball is now played in over 70 countries. The world is slowly realizing what your group already knows."},
-  {e:'🍕',t:"A regulation pickleball court is 44 feet long and 20 feet wide — roughly the size of a two-car garage. You've been playing in a garage this whole time."},
-  {e:'🎤',t:"Pickleball makes a very distinct 'pop' sound when hit. Neighbors of outdoor courts have filed noise complaints. The sport is controversial."},
-  {e:'🐔',t:"Some say the name came from the term 'pickle boat' — the last boat to return in a crew race, filled with leftover oarsmen. Either story is weird."},
-  {e:'🏋️',t:"A one-hour pickleball game burns around 350-475 calories. That's roughly one large order of fries. Worth it."},
-  {e:'⚡',t:"The fastest recorded pickleball serve clocked in at 73 mph. That's fast enough that you definitely wouldn't see it coming."},
-  {e:'🧓',t:"At the 2023 US Open Pickleball Championships, the oldest competitor was 85 years old. There is no excuse for not showing up."},
-  {e:'🏠',t:"Backyard pickleball courts are now a legitimate real estate selling point. Your home value just went up."},
-  {e:'📺',t:"Pickleball has been broadcast on ESPN, CBS, and Fox Sports. Your Friday games are basically pre-pro scouting."},
-  {e:'🎰',t:"The probability of hitting the net on a dink shot increases dramatically when someone is watching. Science has not confirmed this, but everyone knows it's true."},
-  {e:'🧠',t:"Studies show pickleball improves cognitive function in older adults. So the more you play, the smarter you get. Unrelated to your ranking."},
-  {e:'🌞',t:"Outdoor pickleballs have 40 holes. Indoor pickleballs have 26 holes. This is genuinely one of the most important facts in this list."},
-  {e:'🤝',t:"Pickleball etiquette requires you to call your own faults honestly. The honor system is alive and well. Mostly."},
-  {e:'🎓',t:"Major universities now offer pickleball scholarships. The sport went from backyard fun to full academia in under 60 years."},
-  {e:'🥇',t:"The serve in pickleball must be made underhand. This is the only major racket sport with that rule. Pickleball does what it wants."},
-  {e:'🤖',t:"There is now an AI pickleball coach app that analyzes your swing. It probably ranks you better than your friends do."},
-  {e:'😂',t:"The official term for hitting the ball into the net is not a fault — it's just called 'sad.' (Okay that one isn't true. But it should be.)"},
-  {e:'🌮',t:"Joel Pritchard, one of pickleball's inventors, later became a US Congressman. He helped create two great American institutions."},
-  {e:'🔮',t:"At the current growth rate, every American will play pickleball by 2030. Resistance is futile."}
-];
-
-function showFact(){
-  var f=FACTS[Math.floor(Math.random()*FACTS.length)];
-  document.getElementById('pickleballFact').textContent=f.t;
-  document.getElementById('subOkEmoji').textContent=f.e;
-}
-
-function avatarColor(name){
-  var colors=['av0','av1','av2','av3','av4','av5','av6','av7'];
-  var i=0;for(var c=0;c<name.length;c++)i+=name.charCodeAt(c);
-  return colors[i%colors.length];
-}
-function initials(name){return name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);}
-
-function getCTOffset(date){
-  var y=date.getUTCFullYear();
-  var ds=getNthSunday(y,2,2),de=getNthSunday(y,10,1);
-  return (date>=ds&&date<de)?-5*3600000:-6*3600000;
-}
-function getNthSunday(y,m,n){
-  var d=new Date(Date.UTC(y,m,1));
-  var fs=1+(7-d.getUTCDay())%7;
-  return new Date(Date.UTC(y,m,fs+(n-1)*7,2,0,0));
-}
-function getCTNow(){var n=new Date();return new Date(n.getTime()+getCTOffset(n));}
-function getCurrentFriday(){
-  var ct=getCTNow(),day=ct.getUTCDay(),dsf=(day+2)%7,fri=new Date(ct);
-  fri.setUTCDate(ct.getUTCDate()-dsf);return fri;
-}
-function getWeekLabel(){
-  return 'Week of '+getCurrentFriday().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
-}
-function getDeadlineString(){
-  var thu=new Date(getCurrentFriday());thu.setUTCDate(thu.getUTCDate()+6);
-  return 'Closes Thu '+thu.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'})+' at 11:59pm CT';
-}
-function currentWeekVoteCount(){
-  var wk=getWeekLabel(),v=new Set();
-  S.forEach(function(r){if(r[1]===wk)v.add(r[2]);});return v.size;
-}
-function currentWeekLocked(){return currentWeekVoteCount()<MIN_VOTES;}
-
-function goSub(t){
-  currentSub=t;
-  document.querySelectorAll('.seg-btn').forEach(function(e,i){e.classList.toggle('on',['season','weekly'][i]===t);});
-  document.getElementById('view-season').style.display=t==='season'?'block':'none';
-  document.getElementById('view-weekly').style.display=t==='weekly'?'block':'none';
-  if(t==='weekly')populateWeekSelect();
-}
-function toggleInfo(){document.getElementById('infoBox').classList.toggle('show');}
-
-function openSubmit(){
-  document.getElementById('modalWeekTitle').textContent=getWeekLabel();
-  document.getElementById('modalDeadline').textContent=getDeadlineString();
-  renderWP();
-  document.getElementById('submitOverlay').classList.add('show');
-  document.body.style.overflow='hidden';
-}
-function closeSubmit(){document.getElementById('submitOverlay').classList.remove('show');document.body.style.overflow='';resetSubmit();}
-function closeSubmitIfBg(e){if(e.target===document.getElementById('submitOverlay'))closeSubmit();}
-function openSetup(){renderPL();updateSetupUI();document.getElementById('setupOverlay').classList.add('show');document.body.style.overflow='hidden';}
-function closeSetup(){document.getElementById('setupOverlay').classList.remove('show');document.body.style.overflow='';}
-function closeSetupIfBg(e){if(e.target===document.getElementById('setupOverlay'))closeSetup();}
-function toggleAdmin(){
-  var s=document.getElementById('adminSection'),a=document.getElementById('adminArrow');
-  var show=s.classList.toggle('show');a.textContent=show?'▼':'▶';
-}
-
+// ── UTILS ──
 function toast(m){var e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none';},2500);}
 function setErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display=m?'block':'none';}
 function setSyn(on){document.getElementById('sync').style.display=on?'block':'none';}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
 
+// ── WEEK KEY ──
+function getWeekKey(){
+  var now=new Date();
+  var ct=new Date(now.getTime()+(now.getTimezoneOffset()*60000)+(-6*3600000));
+  var day=ct.getDay();
+  var fri=new Date(ct);fri.setDate(ct.getDate()-((day+2)%7));
+  return 'week_'+fri.toISOString().slice(0,10);
+}
+
+// ── API ──
 async function api(data){
-  if(!U||U==='PASTE_YOUR_URL_HERE')throw new Error('No URL');
+  if(!U)throw new Error('No URL');
   var r=await fetch(U+'?data='+encodeURIComponent(JSON.stringify(data)),{redirect:'follow'});
   return JSON.parse(await r.text());
 }
 
 async function load(){
-  if(!U||U==='PASTE_YOUR_URL_HERE'){
-    document.getElementById('hMeta').textContent='Tap to connect';
-    document.getElementById('seasonList').innerHTML='<div class="empty">Tap the gear icon to connect your Google Sheet.</div>';
-    return;
-  }
   setSyn(true);setErr('');
   try{
-    var pd=await api({action:'getPlayers'});
-    var sd=await api({action:'getData'});
-    P=pd.players||[];S=sd.rows||[];
-    renderSeason();populateWeekSelect();renderHdr();renderPL();
+    var r=await api({action:'getPBData'});
+    PLAYERS=r.players||[];
+    RSVP=r.rsvp||{};
+    GAMES=r.games||[];
+    renderAll();
   }catch(e){setErr('Could not connect. '+e.message);}
   setSyn(false);
 }
 
+function renderAll(){
+  renderRSVP();renderTeams();renderStats();renderHdr();renderPlayerList();
+}
+
 function renderHdr(){
-  var w={};S.forEach(function(r){w[r[1]]=1;});
-  document.getElementById('hMeta').textContent=P.length+' players · '+Object.keys(w).length+' weeks · '+getWeekLabel();
+  var inCount=Object.values(RSVP).filter(function(v){return v==='in';}).length;
+  var wk=getWeekKey();
+  document.getElementById('hdrSub').textContent='Friday 7:30am · '+inCount+' in this week';
 }
 
-function getPlayerFirstWeekIdx(player,sortedWeeks){
-  for(var i=0;i<sortedWeeks.length;i++){
-    var wk=sortedWeeks[i];
-    var wkRows=S.filter(function(r){return r[1]===wk;});
-    if(wkRows.some(function(r){return r[2]===player||r[3]===player;}))return i;
-  }
-  return 0;
-}
-
-function calcScores(excludeWeeks){
-  excludeWeeks=excludeWeeks||[];
-  var weekDates={};
-  S.forEach(function(r){if(excludeWeeks.indexOf(r[1])<0&&!weekDates[r[1]])weekDates[r[1]]=r[0];});
-  var sortedWeeks=Object.keys(weekDates).sort(function(a,b){return new Date(weekDates[a])-new Date(weekDates[b]);});
-  var total=sortedWeeks.length;
-  return P.map(function(player){
-    var fi=getPlayerFirstWeekIdx(player,sortedWeeks);
-    var eligible=total-fi;
-    if(eligible<=0)return{n:player,score:null,avg:null,played:0,eligible:0};
-    var t=0,c=0;
-    S.forEach(function(r){if(r[3]===player&&excludeWeeks.indexOf(r[1])<0){t+=Number(r[4]);c++;}});
-    if(c===0)return{n:player,score:null,avg:null,played:0,eligible:eligible};
-    var played=new Set();
-    S.forEach(function(r){if(r[3]===player&&excludeWeeks.indexOf(r[1])<0)played.add(r[1]);});
-    var avg=t/c,score=avg*(eligible/played.size);
-    return{n:player,score:score,avg:avg,played:played.size,eligible:eligible};
+// ── NAV ──
+function goTab(t){
+  ['rsvp','teams','stats'].forEach(function(n){
+    document.getElementById('pg-'+n).classList.toggle('on',n===t);
+    var tb=document.getElementById('tab-'+n);
+    tb.classList.toggle('on',n===t);
+    tb.querySelector('.tbi-label').style.color=n===t?'var(--primary)':'';
   });
+  if(t==='stats')renderStats();
+  if(t==='teams')renderTeams();
 }
 
-function renderSeason(){
-  var currentWk=getWeekLabel();
-  var locked=currentWeekLocked();
-  var excludeForSeason=locked?[currentWk]:[];
-  var scores=calcScores(excludeForSeason);
-  var ranked=scores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
-  var unranked=scores.filter(function(p){return p.score===null;});
-  var all=ranked.concat(unranked);
-  var prevScores=calcScores([currentWk]);
-  var prevRanked=prevScores.filter(function(p){return p.score!==null;}).sort(function(a,b){return a.score-b.score;});
-  var prevMap={};prevRanked.forEach(function(p,i){prevMap[p.n]=i+1;});
-  var medals=['🥇','🥈','🥉'];
-  var el=document.getElementById('seasonList');
-  var votesIn=currentWeekVoteCount();
-  var needed=Math.max(0,MIN_VOTES-votesIn);
-  var notice='';
-  if(needed>0&&votesIn>0){
-    notice='<div class="notice">⏳ <strong>'+needed+' more vote'+(needed!==1?'s':'')+' needed</strong> before this week counts toward the rankings.</div>';
-  } else if(needed>0){
-    notice='<div class="notice">⏳ No votes yet this week. Rankings will update once <strong>'+MIN_VOTES+' people vote</strong>.</div>';
+// ── RSVP ──
+function renderRSVP(){
+  var inPlayers=Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';});
+  var inCount=inPlayers.length;
+  var banner=document.getElementById('hcBanner');
+  var countEl=document.getElementById('hcCount');
+  var labelEl=document.getElementById('hcLabel');
+  var namesEl=document.getElementById('hcNames');
+  var copySection=document.getElementById('copySection');
+
+  countEl.textContent=inCount+' in';
+  if(inCount===0){
+    banner.className='hc-banner waiting';
+    labelEl.textContent='No one in yet — be the first!';
+    namesEl.textContent='';
+    copySection.style.display='none';
+  } else if(inCount<MIN_PLAYERS){
+    banner.className='hc-banner waiting';
+    labelEl.textContent='Need '+(MIN_PLAYERS-inCount)+' more to play 🤞';
+    namesEl.textContent=inPlayers.join(', ');
+    copySection.style.display='none';
+  } else {
+    banner.className='hc-banner ready';
+    labelEl.textContent="We're playing! 🎉";
+    namesEl.textContent=inPlayers.join(', ');
+    copySection.style.display='block';
   }
-  if(ranked.length===0){el.innerHTML=notice+'<div class="empty">No rankings yet.<br/>Tap ＋ Submit to get started!</div>';return;}
-  el.innerHTML=notice+all.map(function(p,i){
-    var has=p.score!==null;
-    var arrow='';
-    if(has&&prevMap[p.n]!==undefined){
-      var diff=(i+1)-prevMap[p.n];
-      if(diff<0)arrow='<span class="arrow-up">▲</span>';
-      else if(diff>0)arrow='<span class="arrow-dn">▼</span>';
-    }
-    var missed=has&&p.eligible>p.played?' ⚠️':'';
-    var sub=has?'Score: '+p.score.toFixed(2)+' · '+p.played+'/'+p.eligible+' weeks'+missed:'No data yet';
-    return '<div class="rank-card'+(i===0&&has?' top':'')+'">'
-      +'<div class="rank-pos">'+(has?(medals[i]||'#'+(i+1)):'—')+'</div>'
-      +'<div class="rank-avatar '+avatarColor(p.n)+'">'+initials(p.n)+'</div>'
-      +'<div style="flex:1"><div class="rank-name">'+p.n+arrow+'</div>'
-      +'<div class="rank-sub">'+sub+'</div></div>'
+
+  var grid=document.getElementById('rsvpGrid');
+  if(!PLAYERS.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text3);font-size:14px;padding:20px 0">Add players in ⚙️ Settings</div>';return;}
+  grid.innerHTML=PLAYERS.map(function(p){
+    var status=RSVP[p]||'none';
+    var statusIcon=status==='in'?'✅':status==='out'?'❌':'❓';
+    return '<div class="player-tile '+status+'" onclick="toggleRSVP(\''+p+'\')">'
+      +avEl(p,44)
+      +'<div class="player-tile-name">'+p+'</div>'
+      +'<div class="player-tile-status">'+statusIcon+'</div>'
       +'</div>';
   }).join('');
 }
 
-function getWeeks(){
-  var w={};S.forEach(function(r){if(!w[r[1]])w[r[1]]=[];w[r[1]].push(r);});
-  return Object.entries(w).sort(function(a,b){return new Date(b[1][0][0])-new Date(a[1][0][0]);});
+async function toggleRSVP(name){
+  var cur=RSVP[name]||'none';
+  var next=cur==='in'?'out':cur==='out'?'none':'in';
+  RSVP[name]=next;
+  renderRSVP();renderHdr();
+  try{
+    await api({action:'setRSVP',week:getWeekKey(),player:name,status:next});
+  }catch(e){setErr('Failed to save RSVP.');}
 }
-function populateWeekSelect(){
-  var weeks=getWeeks(),sel=document.getElementById('weekSelect'),prev=sel.value;
-  sel.innerHTML='';
-  if(!weeks.length){sel.innerHTML='<option>No weeks yet</option>';return;}
-  weeks.forEach(function(w){
-    var opt=document.createElement('option');
-    opt.value=w[0];opt.textContent=w[0]+' · '+new Set(w[1].map(function(r){return r[2];})).size+' votes';
-    sel.appendChild(opt);
+
+function copyGroupMsg(){
+  var inPlayers=Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';});
+  var msg="We're on for Friday! 🏓✅\n\nIn ("+inPlayers.length+"): "+inPlayers.join(', ')+"\n\n7:30am — see you on the court!";
+  navigator.clipboard.writeText(msg).then(function(){toast('Copied to clipboard!');}).catch(function(){
+    var ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copied!');
   });
-  if(prev)sel.value=prev;
-  renderWeekly();
 }
-function renderWeekly(){
-  var wk=document.getElementById('weekSelect').value;
-  if(!wk||wk==='No weeks yet'){document.getElementById('weeklyList').innerHTML='<div class="empty">No weeks yet.</div>';return;}
-  var rows=S.filter(function(r){return r[1]===wk;});
-  var voters=new Set(rows.map(function(r){return r[2];}));
-  var needed=Math.max(0,MIN_VOTES-voters.size);
-  if(needed>0){
-    document.getElementById('weeklyList').innerHTML='<div class="notice" style="text-align:center">⏳ Rankings hidden until '+MIN_VOTES+' people vote.<br/><strong>'+needed+' more vote'+(needed!==1?'s':'')+' needed.</strong></div>';
-    document.getElementById('weeklyMeta').textContent=voters.size+' of '+MIN_VOTES+' votes submitted';
-    return;
+
+// ── TEAMS ──
+function renderTeams(){
+  var inPlayers=Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';});
+  var empty=document.getElementById('teamsEmpty');
+  var main=document.getElementById('teamsMain');
+  if(inPlayers.length<MIN_PLAYERS){
+    empty.style.display='block';main.style.display='none';return;
   }
-  var sc={};rows.forEach(function(r){var p=r[3];if(!sc[p])sc[p]={t:0,c:0};sc[p].t+=Number(r[4]);sc[p].c++;});
-  var ranked=Object.keys(sc).map(function(p){return{n:p,a:sc[p].t/sc[p].c,v:sc[p].c};}).sort(function(a,b){return a.a-b.a;});
-  var medals=['🥇','🥈','🥉'];
-  var subs=Array.from(voters);
-  document.getElementById('weeklyList').innerHTML=!ranked.length?'<div class="empty">No votes.</div>':ranked.map(function(p,i){
-    return '<div class="rank-card">'
-      +'<div class="rank-pos">'+(medals[i]||'#'+(i+1))+'</div>'
-      +'<div class="rank-avatar '+avatarColor(p.n)+'">'+initials(p.n)+'</div>'
-      +'<div style="flex:1"><div class="rank-name">'+p.n+'</div>'
-      +'<div class="rank-sub">Avg rank: '+p.a.toFixed(2)+' · '+p.v+' vote'+(p.v!==1?'s':'')+'</div></div>'
+  empty.style.display='none';main.style.display='block';
+
+  // Current teams or draw button
+  var ct=document.getElementById('currentTeams');
+  if(!CURRENT_TEAMS){
+    ct.innerHTML='<button class="btn btn-green" onclick="drawTeams()" style="margin-bottom:16px">🎲 Draw Teams</button>';
+  } else {
+    ct.innerHTML=renderTeamCards(CURRENT_TEAMS)
+      +'<div style="display:flex;gap:10px;margin-bottom:16px">'
+      +'<button class="btn btn-green" style="flex:1" onclick="openLog()">📝 Log Result</button>'
+      +'<button class="btn btn-ghost" style="flex:1" onclick="drawTeams()">🎲 Redraw</button>'
       +'</div>';
-  }).join('');
-  document.getElementById('weeklyMeta').textContent='Submitted by: '+subs.join(', ');
-}
-
-function renderWP(){
-  var el=document.getElementById('wp');
-  if(!P.length){el.innerHTML='<span style="font-size:14px;color:var(--text3)">No players yet — add one below.</span>';return;}
-  el.innerHTML=P.map(function(p){var on=WP.indexOf(p)>=0;return '<button class="chip'+(on?' on':'')+'" onclick="togWP(\''+p+'\')">'+p+'</button>';}).join('');
-}
-function togWP(n){var i=WP.indexOf(n);if(i>=0)WP.splice(i,1);else WP.push(n);R={};SM='';renderWP();renderIASection();}
-
-async function addPlayerInline(){
-  var name=document.getElementById('newPlayerInline').value.trim();
-  if(!name)return;
-  if(P.indexOf(name)>=0){
-    if(WP.indexOf(name)<0)WP.push(name);
-    document.getElementById('newPlayerInline').value='';
-    R={};SM='';renderWP();renderIASection();
-    toast(name+' selected!');
-    return;
   }
-  var updated=P.concat([name]);setSyn(true);
-  try{
-    var r=await api({action:'savePlayers',players:updated});
-    if(r.ok){
-      P=updated;WP.push(name);
-      document.getElementById('newPlayerInline').value='';
-      R={};SM='';renderWP();renderIASection();renderPL();renderHdr();renderSeason();
-      toast(name+' added!');
-    } else setErr('Error: '+JSON.stringify(r));
-  }catch(e){setErr('Failed: '+e.message);}
-  setSyn(false);
+
+  // Game log
+  var todayGames=GAMES.filter(function(g){return g.week===getWeekKey();});
+  var gl=document.getElementById('gameLog');
+  if(!todayGames.length){gl.innerHTML='';return;}
+  gl.innerHTML='<div class="sec">Today\'s Games</div>'
+    +todayGames.map(function(g,i){
+      return '<div class="score-row"><div style="flex:1"><span style="font-weight:600">'+g.winner+'</span> def. '+g.loser+'</div><div style="font-size:12px;color:var(--text3)">Game '+(i+1)+'</div></div>';
+    }).join('');
 }
 
-function renderIASection(){
-  var ss=document.getElementById('ia-sec'),rs=document.getElementById('rk-sec');
-  if(WP.length<2){ss.style.display='none';rs.style.display='none';return;}
-  ss.style.display='block';
-  document.getElementById('ia').innerHTML=WP.map(function(p){var on=SM===p;return '<button class="chip'+(on?' on':'')+'" onclick="setSM(\''+p+'\')">'+p+'</button>';}).join('');
-  if(SM){rs.style.display='block';renderRR();}else rs.style.display='none';
+function renderTeamCards(teams){
+  var colors=['#007aff','#ff3b30'];
+  var labels=['Team A','Team B'];
+  var classes=['team-a','team-b'];
+  return teams.map(function(team,ti){
+    return '<div class="team-card '+classes[ti]+'">'
+      +'<div class="team-label" style="color:'+colors[ti]+'">'+labels[ti]+'</div>'
+      +'<div class="team-avatars">'+team.map(function(p){return avEl(p,42);}).join('')+'</div>'
+      +'<div class="team-players">'+team.join(' & ')+'</div>'
+      +'</div>';
+  }).join('')+'<div class="vs-badge">VS</div>';
 }
-function setSM(n){SM=n;R={};renderIASection();}
-function renderRR(){
-  var others=WP.filter(function(p){return p!==SM;});
-  document.getElementById('rr').innerHTML=others.map(function(p){
-    var btns='';
-    for(var r=1;r<=others.length;r++)btns+='<button class="rnk'+(R[p]===r?' on':'')+'" onclick="setR(\''+p+'\','+r+')">'+r+'</button>';
-    return '<div class="rnk-row'+(R[p]!==undefined?' done':'')+'"><div style="flex:1;font-weight:600;font-size:15px;">'+p+'</div><div class="rnk-btns">'+btns+'</div></div>';
-  }).join('');
-  document.getElementById('sbtn').disabled=!WP.filter(function(p){return p!==SM;}).every(function(p){return R[p]!==undefined;});
-}
-function setR(p,r){Object.keys(R).forEach(function(k){if(R[k]===r)delete R[k];});R[p]=r;renderRR();}
-async function doSub(){
-  var btn=document.getElementById('sbtn');
-  btn.disabled=true;btn.textContent='Saving...';
-  var others=WP.filter(function(p){return p!==SM;});
-  setSyn(true);
-  try{
-    await api({action:'submitDedup',week:getWeekLabel(),submitter:SM,rankings:others.map(function(p){return{player:p,rank:R[p]};})});
-    await load();
-    document.getElementById('submitFormInner').style.display='none';
-    document.getElementById('subOk').style.display='block';
-    showFact();
-    toast('Rankings saved! 🎉');
-  }catch(e){
-    setErr('Failed to save. '+e.message);
-    btn.disabled=false;btn.textContent='Submit My Rankings';
+
+function drawTeams(){
+  var inPlayers=shuffle(Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';}));
+  // Split into groups of 2 for doubles, rotate through all players
+  // If more than 4, pick 4 for first game, others wait
+  var playing=inPlayers.slice(0,4);
+  CURRENT_TEAMS=[[playing[0],playing[1]],[playing[2],playing[3]]];
+  if(inPlayers.length>4){
+    toast('Playing: '+playing.join(', ')+' · Sitting: '+inPlayers.slice(4).join(', '));
   }
-  setSyn(false);
-}
-function resetSubmit(){
-  SM='';R={};WP=[];
-  var btn=document.getElementById('sbtn');
-  btn.disabled=true;btn.textContent='Submit My Rankings';
-  document.getElementById('submitFormInner').style.display='block';
-  document.getElementById('subOk').style.display='none';
-  renderWP();renderIASection();
+  renderTeams();
 }
 
-function saveUrl(){
-  var url=document.getElementById('si').value.trim();
-  if(!url.startsWith('https://')){alert('Please paste a valid https:// URL');return;}
-  localStorage.setItem('pb_url',url);U=url;
-  document.getElementById('si').value='';
-  updateSetupUI();load();toast('Connected!');
+// ── LOG GAME ──
+function openLog(){
+  if(!CURRENT_TEAMS){return;}
+  var lc=document.getElementById('logContent');
+  lc.innerHTML='<div class="lbl">Who won?</div>'
+    +'<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">'
+    +CURRENT_TEAMS.map(function(team,i){
+      var label=['Team A','Team B'][i];
+      var cls=['btn btn-green','btn btn-red'][i];
+      return '<button class="'+cls+'" onclick="logWin('+i+')">'+label+': '+team.join(' & ')+'</button>';
+    }).join('')
+    +'</div>';
+  document.getElementById('logOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
 }
-function updateSetupUI(){
-  var cs=document.getElementById('cs'),cu=document.getElementById('cu');
-  var ok=U&&U!=='PASTE_YOUR_URL_HERE';
-  cs.style.color=ok?'var(--green)':'var(--red)';
-  cs.textContent=ok?'✓ Connected':'⚠ Not Connected';
-  cu.textContent=ok?U:'';
+
+async function logWin(winnerIdx){
+  var winner=CURRENT_TEAMS[winnerIdx].join(' & ');
+  var loser=CURRENT_TEAMS[1-winnerIdx].join(' & ');
+  var game={week:getWeekKey(),winner:winner,loser:loser,winnerPlayers:CURRENT_TEAMS[winnerIdx],loserPlayers:CURRENT_TEAMS[1-winnerIdx],ts:new Date().toISOString()};
+  GAMES.push(game);
+  // Winners split — rotate them out individually onto opposite teams
+  // Losers come off, others rotate in if waiting
+  var inPlayers=Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';});
+  var winners=CURRENT_TEAMS[winnerIdx];
+  var losers=CURRENT_TEAMS[1-winnerIdx];
+  // Next teams: each winner on opposite team, fill with waiting or losers
+  var waiting=inPlayers.filter(function(p){return winners.indexOf(p)<0&&losers.indexOf(p)<0;});
+  var nextPool=shuffle(losers.concat(waiting));
+  CURRENT_TEAMS=[[winners[0],nextPool[0]||losers[0]],[winners[1],nextPool[1]||losers[1]]];
+  closeLog();
+  try{
+    await api({action:'logGame',game:game});
+  }catch(e){setErr('Failed to save game.');}
+  renderTeams();renderStats();
+  toast(winner+' wins! 🎉');
 }
-function renderPL(){
-  var el=document.getElementById('pl');
-  if(!P.length){el.innerHTML='<div style="padding:14px 16px;font-size:14px;color:var(--text3)">No players yet.</div>';return;}
-  el.innerHTML=P.map(function(p){
+
+function closeLog(){document.getElementById('logOverlay').classList.remove('show');document.body.style.overflow='';}
+
+// ── STATS ──
+function renderStats(){
+  var inPlayers=Object.keys(RSVP).filter(function(p){return RSVP[p]==='in';});
+  var todayGames=GAMES.filter(function(g){return g.week===getWeekKey();});
+
+  // Today's stats
+  var sf=document.getElementById('statsFriday');
+  if(!todayGames.length){
+    sf.innerHTML='<div class="stat-row"><div style="font-size:14px;color:var(--text3);padding:4px 0;">No games logged yet today.</div></div>';
+  } else {
+    var wins={};
+    PLAYERS.forEach(function(p){wins[p]=0;});
+    todayGames.forEach(function(g){g.winnerPlayers.forEach(function(p){wins[p]=(wins[p]||0)+1;});});
+    var sorted=Object.keys(wins).filter(function(p){return wins[p]>0;}).sort(function(a,b){return wins[b]-wins[a];});
+    sf.innerHTML='<div class="stat-row"><div class="stat-icon">🎮</div><div><div style="font-weight:600">Games Played</div><div style="font-size:12px;color:var(--text3)">Today</div></div><div class="stat-val">'+todayGames.length+'</div></div>'
+      +sorted.map(function(p){return '<div class="stat-row">'+avEl(p,32)+'<div style="flex:1"><div style="font-weight:600">'+p+'</div><div style="font-size:12px;color:var(--text3)">Today\'s wins</div></div><div class="stat-badge">'+wins[p]+'W</div></div>';}).join('');
+  }
+
+  // All-time stats
+  var allWins={},allGames={},streaks={},lastResult={};
+  PLAYERS.forEach(function(p){allWins[p]=0;allGames[p]=0;streaks[p]=0;});
+  var sortedGames=GAMES.slice().sort(function(a,b){return new Date(a.ts)-new Date(b.ts);});
+  sortedGames.forEach(function(g){
+    g.winnerPlayers.forEach(function(p){allWins[p]=(allWins[p]||0)+1;allGames[p]=(allGames[p]||0)+1;});
+    g.loserPlayers.forEach(function(p){allGames[p]=(allGames[p]||0)+1;});
+  });
+  // Streaks — count consecutive wins from most recent
+  var revGames=sortedGames.slice().reverse();
+  var streakDone={};
+  revGames.forEach(function(g){
+    g.winnerPlayers.forEach(function(p){if(!streakDone[p])streaks[p]=(streaks[p]||0)+1;});
+    g.loserPlayers.forEach(function(p){if(!streakDone[p]){streaks[p]=0;streakDone[p]=true;}});
+  });
+  // Best win rate
+  var bestWR=null,bestWRVal=-1;
+  PLAYERS.forEach(function(p){if(allGames[p]>=3){var wr=allWins[p]/allGames[p];if(wr>bestWRVal){bestWRVal=wr;bestWR=p;}}});
+  // Longest streak
+  var bestStreak=null,bestStreakVal=0;
+  PLAYERS.forEach(function(p){if(streaks[p]>bestStreakVal){bestStreakVal=streaks[p];bestStreak=p;}});
+  // Bad luck — most losses
+  var losses={};PLAYERS.forEach(function(p){losses[p]=allGames[p]-allWins[p];});
+  var mostLosses=PLAYERS.slice().sort(function(a,b){return losses[b]-losses[a];})[0];
+  // Participation — count unique weeks per player
+  var weeksByPlayer={};
+  GAMES.forEach(function(g){
+    var all=g.winnerPlayers.concat(g.loserPlayers);
+    all.forEach(function(p){if(!weeksByPlayer[p])weeksByPlayer[p]=new Set();weeksByPlayer[p].add(g.week);});
+  });
+  var mostWeeks=PLAYERS.slice().sort(function(a,b){return (weeksByPlayer[b]?weeksByPlayer[b].size:0)-(weeksByPlayer[a]?weeksByPlayer[a].size:0);})[0];
+
+  var sa=document.getElementById('statsAllTime');
+  if(!GAMES.length){
+    sa.innerHTML='<div class="stat-row"><div style="font-size:14px;color:var(--text3);padding:4px 0">Play some games to see stats!</div></div>';
+  } else {
+    sa.innerHTML=[
+      bestStreak&&bestStreakVal>0?'<div class="stat-row"><div class="stat-icon">🔥</div><div style="flex:1"><div style="font-weight:600">Hot Streak</div><div style="font-size:12px;color:var(--text3)">'+bestStreak+'</div></div><div class="stat-badge">'+bestStreakVal+' in a row</div></div>':'',
+      bestWR?'<div class="stat-row"><div class="stat-icon">👑</div><div style="flex:1"><div style="font-weight:600">Best Win Rate</div><div style="font-size:12px;color:var(--text3)">'+bestWR+' · min 3 games</div></div><div class="stat-badge">'+(bestWRVal*100).toFixed(0)+'%</div></div>':'',
+      mostLosses&&losses[mostLosses]>0?'<div class="stat-row"><div class="stat-icon">🏆</div><div style="flex:1"><div style="font-weight:600">Bad Luck Trophy</div><div style="font-size:12px;color:var(--text3)">'+mostLosses+' · keep your head up</div></div><div class="stat-badge">'+losses[mostLosses]+' L</div></div>':'',
+      mostWeeks&&weeksByPlayer[mostWeeks]?'<div class="stat-row"><div class="stat-icon">📅</div><div style="flex:1"><div style="font-weight:600">Most Dedicated</div><div style="font-size:12px;color:var(--text3)">'+mostWeeks+' · never misses</div></div><div class="stat-badge">'+weeksByPlayer[mostWeeks].size+' weeks</div></div>':''
+    ].filter(Boolean).join('');
+  }
+
+  // H2H
+  var h2h={};
+  GAMES.forEach(function(g){
+    var wp=g.winnerPlayers,lp=g.loserPlayers;
+    wp.forEach(function(w){lp.forEach(function(l){
+      var key=[w,l].sort().join('|');
+      if(!h2h[key])h2h[key]={wins:{},total:0};
+      h2h[key].wins[w]=(h2h[key].wins[w]||0)+1;
+      h2h[key].total++;
+    });});
+  });
+  var sh2h=document.getElementById('statsH2H');
+  var keys=Object.keys(h2h).filter(function(k){return h2h[k].total>0;}).sort(function(a,b){return h2h[b].total-h2h[a].total;});
+  if(!keys.length){sh2h.innerHTML='<div class="stat-row"><div style="font-size:14px;color:var(--text3);padding:4px 0">No head-to-head data yet.</div></div>';return;}
+  sh2h.innerHTML=keys.slice(0,8).map(function(k){
+    var parts=k.split('|');
+    var a=parts[0],b=parts[1];
+    var wa=h2h[k].wins[a]||0,wb=h2h[k].wins[b]||0;
+    var leader=wa>wb?a:wb>wa?b:'Tied';
+    return '<div class="stat-row"><div style="flex:1"><div style="font-weight:600;font-size:13px;">'+a+' vs '+b+'</div><div style="font-size:11px;color:var(--text3)">'+wa+'-'+wb+(leader!=='Tied'?' · '+leader+' leads':'· Tied')+'</div></div><div style="font-size:20px">'+(wa>wb?'😤':wb>wa?'😤':'🤝')+'</div></div>';
+  }).join('');
+}
+
+// ── OVERLAYS ──
+function openSetup(){renderPlayerList();updateConnUI();document.getElementById('setupOverlay').classList.add('show');document.body.style.overflow='hidden';}
+function closeSetup(){document.getElementById('setupOverlay').classList.remove('show');document.body.style.overflow='';}
+function openAddPlayer(){document.getElementById('addPlayerOverlay').classList.add('show');document.body.style.overflow='hidden';setTimeout(function(){document.getElementById('quickAddName').focus();},300);}
+function closeAddPlayer(){document.getElementById('addPlayerOverlay').classList.remove('show');document.body.style.overflow='';}
+function closeBg(e,id){if(e.target===document.getElementById(id)){document.getElementById(id).classList.remove('show');document.body.style.overflow='';}}
+function toggleAdmin(){var s=document.getElementById('adminSection'),a=document.getElementById('adminArrow');var show=s.classList.toggle('show');a.textContent=show?'▼':'▶';}
+
+// ── PLAYERS ──
+function renderPlayerList(){
+  var el=document.getElementById('playerList');
+  if(!PLAYERS.length){el.innerHTML='<div style="padding:14px 16px;font-size:14px;color:var(--text3)">No players yet.</div>';return;}
+  el.innerHTML=PLAYERS.map(function(p){
     return '<div class="card-row">'
-      +'<div class="rank-avatar '+avatarColor(p)+'" style="width:32px;height:32px;font-size:12px;flex-shrink:0;">'+initials(p)+'</div>'
+      +'<div class="player-avatar '+avColor(p)+'" style="width:32px;height:32px;font-size:12px;flex-shrink:0;">'+initials(p)+'</div>'
       +'<div style="flex:1;font-weight:600;font-size:15px;">'+p+'</div>'
-      +'<button style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px;" onclick="startEdit(\''+p+'\')">Edit</button>'
-      +'<button class="btn-destructive" style="margin-left:4px" onclick="remP(\''+p+'\')">Remove</button>'
+      +'<button class="btn-dest" onclick="removeP(\''+p+'\')">Remove</button>'
       +'</div>';
   }).join('');
 }
-function startEdit(name){
-  editingPlayer=name;
-  document.getElementById('editingName').textContent=name;
-  document.getElementById('editNameInput').value=name;
-  document.getElementById('editPlayerRow').style.display='block';
-  document.getElementById('editNameInput').focus();
-}
-function cancelEdit(){
-  editingPlayer=null;
-  document.getElementById('editPlayerRow').style.display='none';
-  document.getElementById('editNameInput').value='';
-}
-async function saveEdit(){
-  var newName=document.getElementById('editNameInput').value.trim();
-  if(!newName||!editingPlayer)return;
-  if(newName===editingPlayer){cancelEdit();return;}
-  if(P.indexOf(newName)>=0){setErr('A player named "'+newName+'" already exists.');return;}
-  var oldName=editingPlayer;
-  var updatedPlayers=P.map(function(p){return p===oldName?newName:p;});
-  setSyn(true);
-  try{
-    var r=await api({action:'renamePlayer',oldName:oldName,newName:newName,players:updatedPlayers});
-    if(r.ok){
-      P=updatedPlayers;
-      S=S.map(function(row){
-        var r2=row.slice();
-        if(r2[2]===oldName)r2[2]=newName;
-        if(r2[3]===oldName)r2[3]=newName;
-        return r2;
-      });
-      cancelEdit();renderPL();renderWP();renderHdr();renderSeason();
-      toast(oldName+' renamed to '+newName+'!');
-    } else setErr('Error: '+JSON.stringify(r));
-  }catch(e){setErr('Failed to rename: '+e.message);}
-  setSyn(false);
-}
+
 async function addP(){
   var name=document.getElementById('ni').value.trim();
-  if(!name||P.indexOf(name)>=0)return;
-  var updated=P.concat([name]);setSyn(true);
-  try{
-    var r=await api({action:'savePlayers',players:updated});
-    if(r.ok){P=updated;document.getElementById('ni').value='';renderPL();renderWP();renderHdr();renderSeason();toast(name+' added!');}
-    else setErr('Error: '+JSON.stringify(r));
-  }catch(e){setErr('Failed: '+e.message);}
-  setSyn(false);
-}
-async function remP(name){
-  var updated=P.filter(function(p){return p!==name;});setSyn(true);
-  try{
-    await api({action:'savePlayers',players:updated});
-    P=updated;renderPL();renderWP();renderHdr();renderSeason();toast(name+' removed');
-  }catch(e){setErr('Failed to remove.');}
-  setSyn(false);
+  if(!name||PLAYERS.indexOf(name)>=0)return;
+  PLAYERS.push(name);
+  document.getElementById('ni').value='';
+  renderPlayerList();renderRSVP();
+  try{await api({action:'savePlayers2',players:PLAYERS});}catch(e){setErr('Failed to save.');}
+  toast(name+' added!');
 }
 
-updateSetupUI();
+async function quickAddP(){
+  var name=document.getElementById('quickAddName').value.trim();
+  if(!name||PLAYERS.indexOf(name)>=0){closeAddPlayer();return;}
+  PLAYERS.push(name);
+  document.getElementById('quickAddName').value='';
+  closeAddPlayer();renderRSVP();renderPlayerList();
+  try{await api({action:'savePlayers2',players:PLAYERS});}catch(e){setErr('Failed to save.');}
+  toast(name+' added!');
+}
+
+async function removeP(name){
+  PLAYERS=PLAYERS.filter(function(p){return p!==name;});
+  delete RSVP[name];
+  renderPlayerList();renderRSVP();
+  try{await api({action:'savePlayers2',players:PLAYERS});}catch(e){setErr('Failed to save.');}
+  toast(name+' removed');
+}
+
+// ── SETUP ──
+function saveUrl(){
+  var url=document.getElementById('scriptInput').value.trim();
+  if(!url.startsWith('https://')){alert('Please paste a valid URL');return;}
+  localStorage.setItem('pb2_url',url);U=url;
+  document.getElementById('scriptInput').value='';
+  updateConnUI();load();toast('Connected!');
+}
+function updateConnUI(){
+  var cs=document.getElementById('connStatus'),cu=document.getElementById('connUrl');
+  var ok=U&&U!==SCRIPT_URL||U===SCRIPT_URL;
+  cs.style.color='var(--green)';cs.textContent='✓ Connected';cu.textContent=U;
+}
+
 load();
 </script>
 </body>
